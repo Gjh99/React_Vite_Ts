@@ -6,6 +6,7 @@ import '@/language/il8.ts'
 import {Provider} from 'react-redux'
 import {persistor, store} from "./redux/index.ts";
 import {PersistGate} from "redux-persist/integration/react";
+import '@/assets/iconfont/iconfont.css'
 
 createRoot(document.getElementById('root')!).render(
     // <StrictMode>
