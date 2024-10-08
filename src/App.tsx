@@ -18,7 +18,7 @@ function App(props:any) {
 
     // UI语言
     const setAntdLanguage = () => {
-        if (locale == 'zhCN') {
+        if (locale == 'zh') {
             return seti18nLocale(zhCN)
         } else {
             return seti18nLocale(enUS)
@@ -35,7 +35,7 @@ function App(props:any) {
         i18n.changeLanguage(locale || getBrowserLang())
         setAntdLanguage()
         setLanguage(locale || getBrowserLang())
-    }, [i18nLocale])
+    }, [locale])
 
     return (
         <>
