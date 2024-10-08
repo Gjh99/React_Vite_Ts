@@ -1,0 +1,16 @@
+{
+  "id": "4697347",
+  "name": "react_study",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "19881681",
+      "name": "中文",
+      "font_class": "erqi",
+      "unicode": "e6c2",
+      "unicode_decimal": 59074
+    }
+  ]
+}
