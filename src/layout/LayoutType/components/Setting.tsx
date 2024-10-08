@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {SettingOutlined} from '@ant-design/icons';
-import {Card, Divider, Drawer, Switch } from 'antd'
+import {Card, Divider, Drawer, Flex, Switch} from 'antd'
 import {setLayout, setTheme} from "../../../redux/modules/global/action"
 import {connect} from "react-redux";
 import './index.less'
@@ -8,7 +8,7 @@ import DefaultLayout from '@/assets/image/DefaultLayout.png'
 import SlideLayout from '@/assets/image/SlideLayout.png'
 import TopLayout from '@/assets/image/TopLayout.png'
 
-const { Meta } = Card
+const {Meta} = Card
 
 function Setting(props: any) {
     let {type, setLayout, setTheme} = props
@@ -37,7 +37,7 @@ function Setting(props: any) {
         },
     ])
 
-    const onChange =  () => {
+    const onChange = () => {
         setTheme(!props.isDarkMode)
     }
 
@@ -60,7 +60,7 @@ function Setting(props: any) {
                                       onClick={() => setLayout(item.name)} hoverable={true}
                                       cover={<img src={item.image}/>}
                                 >
-                                    <Meta title={item.name} style={{textAlign:"center"}}/>
+                                    <Meta title={item.name} style={{textAlign: "center"}}/>
                                 </Card>
                             )
                         })
@@ -71,10 +71,10 @@ function Setting(props: any) {
                         主题颜色
                     </div>
                 </Divider>
-                <div className="flx-align-center">
+                <Flex align="center">
                     <div className="fontSize18 fontW mr20">暗黑模式</div>
                     <Switch defaultChecked onChange={onChange} checked={props.isDarkMode}/>
-                </div>
+                </Flex>
             </Drawer>
         </>
     )
