@@ -5,7 +5,7 @@ import {globalState} from '@/redux/interface/index.ts'
 const globalState:globalState = {
     type: 'DefaultLayout',
     isDarkMode: false,
-    locale: 'zhCN'
+    locale: 'zh'
 }
 
 const global = (state = globalState, action) =>
