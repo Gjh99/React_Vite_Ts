@@ -14,7 +14,7 @@ const AuthRouter = (props: { children }) =>{
 
     if (!route.meta?.requiresAuth) return props.children;
 
-    console.log('store', store)
+    console.log('store', store.getState())
 
     const token = store.getState().auth?.token
     console.log('token', token)
@@ -23,6 +23,7 @@ const AuthRouter = (props: { children }) =>{
         console.log('没有tk')
         return <Navigate to="/login" replace />
     }
+    return props.children;
 }
 
 export default AuthRouter;
