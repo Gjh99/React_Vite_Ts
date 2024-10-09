@@ -10,9 +10,10 @@ import {getBrowserLang} from "./utils";
 import i18n from "i18next";
 import {setLanguage, setTheme} from "./redux/modules/global/action.ts";
 import {connect} from "react-redux";
+import AuthRouter from "./router/authRouter.tsx";
 
-function App(props:any) {
-    console.log('props',props)
+function App(props: any) {
+    console.log('props', props)
     let {locale, setLanguage} = props
     const [i18nLocale, seti18nLocale] = useState(zhCN)
 
@@ -38,17 +39,17 @@ function App(props:any) {
     }, [locale])
 
     return (
-        <>
+        <HashRouter>
             <ConfigProvider
                 locale={i18nLocale}
                 theme={{
                     algorithm: props.isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
                 }}>
-                <HashRouter>
+                <AuthRouter>
                     <Router/>
-                </HashRouter>
+                </AuthRouter>
             </ConfigProvider>
-        </>
+        </HashRouter>
     )
 }
 

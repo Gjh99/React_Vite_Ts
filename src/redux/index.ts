@@ -4,12 +4,14 @@ import { persistStore, persistReducer } from 'redux-persist';
 import { thunk } from "redux-thunk";
 import promise from 'redux-promise';
 import global from "./modules/global/reducer.ts";
+import auth from "./modules/auth/reducer.ts";
 
 const middleWares = applyMiddleware(thunk, promise)
 
 // 拆分reducer
 const reducer= combineReducers({
-    global
+    global,
+    auth
 })
 
 const persistedReducer =  persistReducer(persistConfig, reducer)
