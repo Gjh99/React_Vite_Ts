@@ -2,6 +2,7 @@ import React from "react";
 import '../DefaultLayout/index.less'
 import {Avatar} from "antd";
 import reactImg from '@/assets/react.svg'
+import './index.less'
 function AvatarIcon() {
     return (
         <>

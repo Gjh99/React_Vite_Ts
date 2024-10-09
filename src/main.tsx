@@ -2,6 +2,7 @@ import {createRoot} from 'react-dom/client'
 import App from './App.tsx'
 import '@/styles/reset.less'
 import '@/styles/common.less'
+import '@/styles/theme.less'
 import '@/language/il8.ts'
 import {Provider} from 'react-redux'
 import {persistor, store} from "./redux/index.ts";

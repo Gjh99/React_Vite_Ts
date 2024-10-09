@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {SettingOutlined} from '@ant-design/icons';
 import {Card, Divider, Drawer, Flex, Switch} from 'antd'
 import {setLayout, setTheme} from "../../../redux/modules/global/action"
@@ -11,7 +11,7 @@ import TopLayout from '@/assets/image/TopLayout.png'
 const {Meta} = Card
 
 function Setting(props: any) {
-    let {type, setLayout, setTheme} = props
+    let {type, setLayout, setTheme, isDarkMode} = props
     const [drawerOpen, setDrawerOpen] = useState(false)
     console.log('type', props)
     const showSetting = () => {
@@ -37,14 +37,27 @@ function Setting(props: any) {
         },
     ])
 
-    const onChange = () => {
-        setTheme(!props.isDarkMode)
+    const onChangeDark = () => {
+        setTheme(!isDarkMode)
+        if (isDarkMode) {
+            document.body.setAttribute("system-theme", 'dark')
+        } else {
+            document.body.setAttribute("system-theme", 'light')
+        }
     }
+
+    useEffect(() => {
+        if (isDarkMode) {
+            document.body.setAttribute("system-theme", 'dark')
+        } else {
+            document.body.setAttribute("system-theme", 'light')
+        }
+    }, [isDarkMode]);
 
     return (
         <>
             <div className="setting flx-center h100 pointer" onClick={showSetting}>
-                <SettingOutlined className="settingIcon" style={{}}/>
+                <SettingOutlined className="settingIcon"/>
             </div>
             <Drawer title="设置" onClose={onClose} open={drawerOpen} closeIcon={false}>
                 <Divider variant="dashed" style={{borderColor: '#333'}} dashed>
@@ -73,7 +86,7 @@ function Setting(props: any) {
                 </Divider>
                 <Flex align="center">
                     <div className="fontSize18 fontW mr20">暗黑模式</div>
-                    <Switch defaultChecked onChange={onChange} checked={props.isDarkMode}/>
+                    <Switch defaultChecked onChange={onChangeDark} checked={isDarkMode}/>
                 </Flex>
             </Drawer>
         </>
