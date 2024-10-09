@@ -1,8 +1,8 @@
 import {produce} from "immer";
 import {SET_LANGUAGE, SET_LAYOUT_TYPE, SET_THEME} from "../mutationType.ts";
-import {globalState} from '@/redux/interface/index.ts'
+import {GlobalState} from '@/redux/interface/index.ts'
 
-const globalState:globalState = {
+const globalState:GlobalState = {
     type: 'DefaultLayout',
     isDarkMode: false,
     locale: 'zh'
