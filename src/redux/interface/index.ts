@@ -1,9 +1,9 @@
-export interface globalState {
+export interface GlobalState {
     type: string;
     isDarkMode: boolean;
     locale: string;
 }
 
 export interface AuthState {
-    globalState: string;
+    token?: string;
 }
