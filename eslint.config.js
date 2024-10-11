@@ -81,5 +81,8 @@ export const settings = {
             map: [['@', './src']],
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
+        node: {
+            paths: ['src'], // 添加 node 解析器的路径
+        },
     },
 };
