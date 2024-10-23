@@ -1,5 +1,3 @@
-import {setTabsRoute} from "../redux/modules/tabs/action.ts";
-
 interface TabsList {
     title: string;
     pathName: string;
@@ -11,6 +9,8 @@ interface PropsInterFace {
     setLanguage: (lang: string) => void;
     setLayout: (layout: string) => void;
     setTheme: (theme: string) => void;
-    TabsList: TabsList[]
+    TabsList: TabsList[];
     setTabsRoute: (TabsList: TabsList[]) => void;
+    showTabs: boolean;
+    setShowTab: (Tabs: boolean) => void;
 }

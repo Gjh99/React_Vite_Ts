@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {SettingOutlined} from '@ant-design/icons';
 import {Card, Divider, Drawer, Flex, Switch} from 'antd'
-import {setLayout, setTheme} from "../../../redux/modules/global/action"
+import {setLayout, setShowTab, setTheme} from "../../../redux/modules/global/action"
 import {connect} from "react-redux";
 import './index.less'
 import DefaultLayout from '@/assets/image/DefaultLayout.png'
@@ -11,7 +11,7 @@ import TopLayout from '@/assets/image/TopLayout.png'
 const {Meta} = Card
 
 function Setting(props: any) {
-    let {type, setLayout, setTheme, isDarkMode} = props
+    let {type, setLayout, setTheme, isDarkMode, setShowTab, showTabs} = props
     const [drawerOpen, setDrawerOpen] = useState(false)
     console.log('type', props)
     const showSetting = () => {
@@ -44,6 +44,9 @@ function Setting(props: any) {
         } else {
             document.body.setAttribute("system-theme", 'light')
         }
+    }
+    const onChangeTab = () => {
+        setShowTab(!showTabs)
     }
 
     useEffect(() => {
@@ -88,6 +91,15 @@ function Setting(props: any) {
                     <div className="fontSize18 fontW mr20">暗黑模式</div>
                     <Switch defaultChecked onChange={onChangeDark} checked={isDarkMode}/>
                 </Flex>
+                <Divider variant="dashed" style={{borderColor: '#333'}} dashed>
+                    <div className="fontW fontSize20">
+                        标签栏
+                    </div>
+                </Divider>
+                <Flex align="center">
+                    <div className="fontSize18 fontW mr20">是否显示</div>
+                    <Switch defaultChecked onChange={onChangeTab} checked={showTabs}/>
+                </Flex>
             </Drawer>
         </>
     )
@@ -95,6 +107,6 @@ function Setting(props: any) {
 
 const mapStateToProps = (state) => state.global
 
-const mapDispatchToProps = {setLayout, setTheme}
+const mapDispatchToProps = {setLayout, setTheme, setShowTab}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Setting)
