@@ -5,13 +5,15 @@ import { thunk } from "redux-thunk";
 import promise from 'redux-promise';
 import global from "./modules/global/reducer.ts";
 import auth from "./modules/auth/reducer.ts";
+import tabs from "./modules/tabs/reducer.ts";
 
 const middleWares = applyMiddleware(thunk, promise)
 
 // 拆分reducer
 const reducer= combineReducers({
     global,
-    auth
+    auth,
+    tabs
 })
 
 const persistedReducer =  persistReducer(persistConfig, reducer)
