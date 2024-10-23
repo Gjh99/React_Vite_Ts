@@ -7,6 +7,7 @@ import Setting from "../components/Setting.tsx";
 import {Outlet} from "react-router-dom";
 import Language from "../components/Language.tsx";
 import MyMenu from "../components/Menu";
+import MyTabs from "../components/Tabs";
 
 const {Header, Content, Sider} = Layout
 
@@ -28,6 +29,7 @@ function Index() {
                         <MyMenu mode={'inline'}/>
                     </Sider>
                     <Layout>
+                        <MyTabs/>
                         <Content>
                             <Outlet/>
                         </Content>
