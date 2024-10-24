@@ -17,14 +17,18 @@ export const getBrowserLang = () => {
  * @description 查询当前对应的路由
  * @param {String} path 当前访问地址
  * @param {Array} routes 路由列表
+ * @param {Boolean} isReturnParentTitle 是否返回父级名字
  * @return array
  */
-export const searchRoute = (path: string, routes) => {
+export const searchRoute = (path: string, routes, isReturnParentTitle: boolean | null = null) => {
     let result = {};
     for (let item of routes) {
         if (item.path === path) return item;
         if (item.children) {
-            const res = searchRoute(path, item.children);
+            const res = searchRoute(path, item.children, isReturnParentTitle);
+            if (isReturnParentTitle && item.meta && Object.keys(res).length) {
+                res.title = item.meta.title;
+            }
             if (Object.keys(res).length) result = res;
         }
     }
