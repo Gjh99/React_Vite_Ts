@@ -1,22 +1,27 @@
 import {Layout} from "antd";
 import React from 'react';
 import './index.less'
-import Logo from "../components/Logo.tsx";
 import AvatarIcon from "../components/MyAvatar.tsx";
 import Setting from "../components/Setting.tsx";
 import {Outlet} from "react-router-dom";
 import Language from "../components/Language.tsx";
+import Logo from "../components/Logo.tsx";
 import MyMenu from "../components/Menu";
 import MyTabs from "../components/Tabs";
+import Breadcrumb from "../components/Breadcrumb";
+import PropTypes from 'prop-types';
 
 const {Header, Content, Sider} = Layout
 
-function Index() {
+function Index({showTabs}) {
     return (
         <>
             <Layout>
                 <Header className="flx-justify-between">
-                    <Logo/>
+                    <div className="flx-center h100">
+                        <Logo/>
+                        <Breadcrumb/>
+                    </div>
                     <div className="mr10 flx-center h100">
                         <Language/>
                         <Setting/>
@@ -29,7 +34,9 @@ function Index() {
                         <MyMenu mode={'inline'}/>
                     </Sider>
                     <Layout>
-                        <MyTabs/>
+                        {
+                            showTabs && <MyTabs/>
+                        }
                         <Content>
                             <Outlet/>
                         </Content>
@@ -40,4 +47,7 @@ function Index() {
     )
 }
 
+Index.propTypes = {
+    showTabs: PropTypes.bool.isRequired, // 假设 showTabs 是布尔类型且必传
+};
 export default Index
