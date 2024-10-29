@@ -28,6 +28,7 @@ const MyBreadcrumb = () => {
 
     return(
         <Breadcrumb
+            className="ml10"
             items={[...breadItem]}
             separator=">"
         />
