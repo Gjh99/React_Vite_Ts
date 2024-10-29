@@ -13,14 +13,16 @@ import PropTypes from 'prop-types';
 
 const {Header, Content, Sider} = Layout
 
-function Index({showTabs}) {
+function Index({showTabs, showBreadcrumb}) {
     return (
         <>
             <Layout>
                 <Header className="flx-justify-between">
                     <div className="flx-center h100">
                         <Logo/>
-                        <Breadcrumb/>
+                        {
+                            showBreadcrumb && <Breadcrumb/>
+                        }
                     </div>
                     <div className="mr10 flx-center h100">
                         <Language/>
@@ -48,6 +50,7 @@ function Index({showTabs}) {
 }
 
 Index.propTypes = {
-    showTabs: PropTypes.bool.isRequired, // 假设 showTabs 是布尔类型且必传
+    showTabs: PropTypes.bool.isRequired,
+    showBreadcrumb: PropTypes.bool.isRequired,
 };
 export default Index

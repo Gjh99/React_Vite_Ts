@@ -1,4 +1,4 @@
-import {SET_LAYOUT_TYPE, SET_THEME, SET_LANGUAGE, SET_TAB} from "../mutationType.ts";
+import {SET_LAYOUT_TYPE, SET_THEME, SET_LANGUAGE, SET_TAB, SET_BREADCRUMB} from "../mutationType.ts";
 
 export const setLayout = (globalLayout) => ({
     type: SET_LAYOUT_TYPE,
@@ -16,4 +16,9 @@ export const setLanguage = (globalLanguage) => ({
 export const setShowTab = (globalShowTabs) => ({
     type: SET_TAB,
     globalShowTabs
+})
+
+export const setShowBreadcrumb = (globalShowBread) => ({
+    type: SET_BREADCRUMB,
+    globalShowBread
 })

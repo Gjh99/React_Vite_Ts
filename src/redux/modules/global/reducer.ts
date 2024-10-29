@@ -1,12 +1,13 @@
 import {produce} from "immer";
-import {SET_LANGUAGE, SET_LAYOUT_TYPE, SET_THEME,SET_TAB} from "../mutationType.ts";
+import {SET_LANGUAGE, SET_LAYOUT_TYPE, SET_THEME,SET_TAB,SET_BREADCRUMB} from "../mutationType.ts";
 import {GlobalState} from '@/redux/interface/index.ts'
 
 const globalState:GlobalState = {
     type: 'DefaultLayout',
     isDarkMode: false,
     locale: 'zh',
-    showTabs: true
+    showTabs: true,
+    showBreadcrumb: true
 }
 
 const global = (state = globalState, action) =>
@@ -22,8 +23,10 @@ const global = (state = globalState, action) =>
                 draftState.locale = action.globalLanguage
                 break;
             case SET_TAB:
-                console.log(action.globalShowTabs)
                 draftState.showTabs = action.globalShowTabs
+                break;
+            case SET_BREADCRUMB:
+                draftState.showBreadcrumb = action.globalShowBread
                 break;
             default:
                 break;

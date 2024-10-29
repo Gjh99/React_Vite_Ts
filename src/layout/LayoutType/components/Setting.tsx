@@ -1,7 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {SettingOutlined} from '@ant-design/icons';
 import {Card, Divider, Drawer, Flex, Switch} from 'antd'
-import {setLayout, setShowTab, setTheme} from "../../../redux/modules/global/action"
+import {
+    setLayout,
+    setShowBreadcrumb,
+    setShowTab,
+    setTheme
+} from "../../../redux/modules/global/action"
 import {connect} from "react-redux";
 import './index.less'
 import DefaultLayout from '@/assets/image/DefaultLayout.png'
@@ -11,7 +16,7 @@ import TopLayout from '@/assets/image/TopLayout.png'
 const {Meta} = Card
 
 function Setting(props: any) {
-    let {type, setLayout, setTheme, isDarkMode, setShowTab, showTabs} = props
+    let {type, setLayout, setTheme, isDarkMode, setShowTab, showTabs, setShowBreadcrumb, showBreadcrumb} = props
     const [drawerOpen, setDrawerOpen] = useState(false)
     console.log('type', props)
     const showSetting = () => {
@@ -47,6 +52,9 @@ function Setting(props: any) {
     }
     const onChangeTab = () => {
         setShowTab(!showTabs)
+    }
+    const onChangeTabBreadcrumb = () => {
+        setShowBreadcrumb(!showBreadcrumb)
     }
 
     useEffect(() => {
@@ -100,6 +108,15 @@ function Setting(props: any) {
                     <div className="fontSize18 fontW mr20">是否显示</div>
                     <Switch defaultChecked onChange={onChangeTab} checked={showTabs}/>
                 </Flex>
+                <Divider variant="dashed" style={{borderColor: '#333'}} dashed>
+                    <div className="fontW fontSize20">
+                        面包屑导航
+                    </div>
+                </Divider>
+                <Flex align="center">
+                    <div className="fontSize18 fontW mr20">是否显示</div>
+                    <Switch defaultChecked onChange={onChangeTabBreadcrumb} checked={showBreadcrumb}/>
+                </Flex>
             </Drawer>
         </>
     )
@@ -107,6 +124,6 @@ function Setting(props: any) {
 
 const mapStateToProps = (state) => state.global
 
-const mapDispatchToProps = {setLayout, setTheme, setShowTab}
+const mapDispatchToProps = {setLayout, setTheme, setShowTab, setShowBreadcrumb}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Setting)
