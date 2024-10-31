@@ -1,0 +1,24 @@
+{
+  "code": 200,
+  "msg": "请求成功",
+  "data": [
+    {
+      "key": "/home",
+      "label": "首页"
+    },
+    {
+      "key": "/system",
+      "label": "系统设置",
+      "children": [
+        {
+          "key": "/system/user",
+          "label": "用户管理"
+        },
+        {
+          "key": "/system/role",
+          "label": "角色管理"
+        }
+      ]
+    }
+  ]
+}
