@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "8845833",
+      "name": "在线人数",
+      "font_class": "zaixianrenshu",
+      "unicode": "e612",
+      "unicode_decimal": 58898
+    },
+    {
+      "icon_id": "2604770",
+      "name": "用户访问量",
+      "font_class": "yonghufangwenliang",
+      "unicode": "e991",
+      "unicode_decimal": 59793
+    },
+    {
+      "icon_id": "4456539",
+      "name": "团队",
+      "font_class": "tuandui",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
       "icon_id": "19881681",
       "name": "中文",
       "font_class": "erqi",
