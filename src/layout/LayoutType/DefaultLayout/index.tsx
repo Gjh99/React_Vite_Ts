@@ -39,7 +39,7 @@ function Index({showTabs, showBreadcrumb}) {
                         {
                             showTabs && <MyTabs/>
                         }
-                        <Content>
+                        <Content style={{overflowY:'auto'}}>
                             <Outlet/>
                         </Content>
                     </Layout>
