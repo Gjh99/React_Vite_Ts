@@ -1,9 +1,11 @@
-const user = () => {
-  return(
-      <>
-          <div>用户</div>
-      </>
-  )
-}
+import React from 'react';
 
-export default user
+const user: React.FC = () => {
+    return (
+        <div>
+            用户管理
+        </div>
+    );
+};
+
+export default user;
