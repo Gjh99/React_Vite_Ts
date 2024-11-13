@@ -19,6 +19,20 @@
           "label": "角色管理"
         }
       ]
+    },
+    {
+      "key": "/Toolbox",
+      "label": "工具箱",
+      "children": [
+        {
+          "key": "/Toolbox/PictureConversion",
+          "label": "图片转换"
+        },
+        {
+          "key": "/Toolbox/role",
+          "label": "角色管理"
+        }
+      ]
     }
   ]
 }
