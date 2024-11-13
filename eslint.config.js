@@ -2,7 +2,6 @@ import globals from "globals";
 import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
 import pluginReact from "eslint-plugin-react";
-
 export default [
     {
         files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
@@ -40,6 +39,11 @@ export default [
     ...tseslint.configs.recommended,
     pluginReact.configs.flat.recommended,
     {
+        settings: {
+            react: {
+                version: "detect"  // 自动检测 React 版本
+            }
+        },
         rules: {
             // eslint (http://eslint.cn/docs/rules)
             'react/react-in-jsx-scope': 'off',
@@ -70,19 +74,3 @@ export default [
         }
     }
 ];
-
-// 在这里定义 settings
-export const settings = {
-    react: {
-        version: "detect", // 自动检测 React 版本
-    },
-    'import/resolver': {
-        alias: {
-            map: [['@', './src']],
-            extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        },
-        node: {
-            paths: ['src'], // 添加 node 解析器的路径
-        },
-    },
-};
