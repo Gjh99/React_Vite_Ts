@@ -20,7 +20,7 @@ export const getBrowserLang = () => {
  * @param {Boolean} isReturnParentTitle 是否返回父级名字
  * @return array
  */
-export const searchRoute = (path: string, routes, isReturnParentTitle: boolean | null = null) => {
+export const searchRoute = (path: string, routes: any, isReturnParentTitle: boolean | null = null) => {
     let result = {};
     for (let item of routes) {
         if (item.path === path) return item;
@@ -34,3 +34,16 @@ export const searchRoute = (path: string, routes, isReturnParentTitle: boolean |
     }
     return result;
 };
+/**
+ * @description arrayBuffer转base64
+ * @param {ArrayBuffer}  buffer
+ * @return base64
+ */
+export const arrayBufferToBase64 = (buffer: ArrayBuffer) => {
+    const uint8Array = new Uint8Array(buffer);
+    let binaryString = '';
+    for (let i = 0; i < uint8Array.byteLength; i++) {
+        binaryString += String.fromCharCode(uint8Array[i]);
+    }
+    return window.btoa(binaryString);
+}
