@@ -7,10 +7,20 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
-    }
+      "@/*": ["src/*"],
+      "@ant-design/icons": ["node_modules/@ant-design/icons"]
+    },
+    "types": ["msw"],
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "src/**/*" // 确保这里包含了你的代码文件
+  ],
+  "exclude": [
+    "node_modules",        // 排除 node_modules
+    "build",               // 排除构建输出目录
+    "dist"                 // 排除 dist 目录
   ]
 }
