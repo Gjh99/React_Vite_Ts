@@ -1,11 +1,11 @@
 import {Avatar, Card, Col, Row} from "antd";
 import React, {useEffect, useRef, useState} from "react";
 import reactImg from '@/assets/react.svg';
-import EChart from "../../component/Echart.tsx";
+import EChart from "../../component/Echart";
 import './index.less';
-import {getSystemInterView} from "../../api/user.ts";
+import {getSystemInterView} from "@/api/user";
 
-function home() {
+const home: React.FC = ()=>{
     const homeRef = useRef(null);
 
     const [systemData, setSystemData] = useState([
