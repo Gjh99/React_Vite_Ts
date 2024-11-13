@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const service = axios.create({
-    baseURL: 'http://localhost:5173',
+    baseURL: import.meta.env.VITE_REACT_APP_API_URL,
     timeout: 5000
 })
 
@@ -54,9 +54,19 @@ service.interceptors.response.use(
     }
 )
 
-export const get = (url, params?: any) => {
+// 自定义上传文件
+export const postFile = (url: string, data?: any) =>{
+    return service.post(url, data,{
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+        responseType: 'arraybuffer', // 获取二进制数据
+    })
+}
+
+export const get = (url: string, params?: any) => {
     return service.get(url, {params})
 }
-export const post = (url, data?: any) => {
+export const post = (url: string, data?: any) => {
     return service.post(url, data)
 }
