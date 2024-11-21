@@ -1,16 +1,19 @@
-interface TabsList {
-    title: string;
-    pathName: string;
-    key: string;
-}
+import {TabsList, MenuList} from "@/redux/interface";
 
-interface PropsInterFace {
+export interface PropsInterFace {
+    systemType: string;
     locale: string;
     setLanguage: (lang: string) => void;
     setLayout: (layout: string) => void;
-    setTheme: (theme: string) => void;
+    isDarkMode: boolean;
+    setTheme: (theme: boolean) => void;
+    showBreadcrumb: boolean;
+    setShowBreadcrumb: (globalShowBread: boolean) => void;
     TabsList: TabsList[];
+    tabsRouteArray: TabsList[];
     setTabsRoute: (TabsList: TabsList[]) => void;
+    menuList: TabsList[];
+    setMenu: (TabsList: MenuList[]) => void;
     showTabs: boolean;
     setShowTab: (Tabs: boolean) => void;
 }

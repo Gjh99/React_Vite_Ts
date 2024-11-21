@@ -1,18 +1,24 @@
 import {Menu} from "antd";
 import {useLocation, useNavigate} from "react-router-dom";
-import {getMenu} from "../../../../api/user.ts";
+import {getMenu} from "@/api/user";
 import {useEffect} from "react";
-import { connect } from "react-redux";
-import {setMenu} from "../../../../redux/modules/auth/action.ts";
+import {connect} from "react-redux";
+import {setMenu} from "@/redux/modules/auth/action";
+import type {MenuProps} from 'antd';
+import {RootState} from "@/redux/interface";
+import {PropsInterFace} from "@/interfaces/common";
 
-const MyMenu = (props) => {
+interface ModeProps {
+    mode: string;
+};
+
+type MyMenuInterface = Pick<PropsInterFace, 'menuList' | 'setMenu'> & ModeProps;
+
+const MyMenu = (props: MyMenuInterface) => {
     const navigate = useNavigate()
     const location = useLocation()
     let {mode, setMenu, menuList} = {...props}
-    const clickMenu = ({key}) => {
-        console.log('key', key)
-        // const route = searchRoute(key, props.menuList);
-        // if (route.isLink) window.open(route.isLink, "_blank");
+    const clickMenu: MenuProps['onClick'] = ({key}) => {
         navigate(key);
     };
 
@@ -32,7 +38,7 @@ const MyMenu = (props) => {
     return (
         <>
             <Menu
-                mode={mode}
+                mode={mode as 'horizontal' | 'vertical' | 'inline'}
                 selectedKeys={[location.pathname]}
                 onClick={clickMenu}
                 items={menuList}
@@ -41,7 +47,7 @@ const MyMenu = (props) => {
     )
 }
 
-const mapStateToProps = (state) => state.auth;
+const mapStateToProps = (state: RootState) => state.auth;
 
 const mapDispatchToProps = {setMenu}
 

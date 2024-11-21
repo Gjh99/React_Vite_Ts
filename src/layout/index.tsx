@@ -8,15 +8,15 @@ const SlideLayout = React.lazy(() => import('./LayoutType/SlideLayout'))
 const TopLayout = React.lazy(() => import('./LayoutType/TopLayout'))
 
 function MyLayout(props: any) {
-    let {type, showTabs, showBreadcrumb} = props
+    let {systemType, showTabs, showBreadcrumb} = props
     const [PageComponent, setPageComponent] = useState<React.ComponentType<any> | null>(null);
     useEffect(() => {
         setPageComponent(DefaultLayout)
     }, [])
 
     useEffect(() => {
-        console.log('layoutState', type)
-        switch (type) {
+        console.log('layoutState', systemType)
+        switch (systemType) {
             case 'DefaultLayout':
                 setPageComponent(DefaultLayout);
                 break;
@@ -27,7 +27,7 @@ function MyLayout(props: any) {
                 setPageComponent(TopLayout);
                 break;
         }
-    }, [type])
+    }, [systemType])
 
     return (
         <>

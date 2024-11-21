@@ -1,11 +1,14 @@
-import React from "react";
 import type {MenuProps} from 'antd';
 import {Dropdown} from 'antd'
-import {setLanguage, setLayout, setTheme} from "../../../redux/modules/global/action"
+import {setLanguage} from "../../../redux/modules/global/action"
 import {connect} from "react-redux";
-import './index.less'
+import './index.less';
+import {RootState} from "@/redux/interface";
+import {PropsInterFace} from "@/interfaces/common";
 
-function Setting(props: PropsInterFace) {
+type LanguageInterface = Pick<PropsInterFace, 'locale' | 'setLanguage'>
+
+const Language = (props: LanguageInterface) => {
     let {locale, setLanguage} = props
     const LanguageItems: MenuProps['items'] = [
         {
@@ -36,7 +39,7 @@ function Setting(props: PropsInterFace) {
                     onClick: handleMenuClick
                 }}>
                     {/*<a onClick={(e) => e.preventDefault()}>*/}
-                        <i className="iconfont icon-erqi fontSize24"></i>
+                    <i className="iconfont icon-erqi fontSize24"></i>
                     {/*</a>*/}
                 </Dropdown>
             </div>
@@ -44,8 +47,8 @@ function Setting(props: PropsInterFace) {
     )
 }
 
-const mapStateToProps = (state) => state.global
+const mapStateToProps = (state: RootState) => state.global
 
-const mapDispatchToProps = {setLayout, setTheme, setLanguage}
+const mapDispatchToProps = {setLanguage}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Setting)
+export default connect(mapStateToProps, mapDispatchToProps)(Language)

@@ -1,19 +1,21 @@
 import {Layout} from "antd";
-import React from 'react';
 import './index.less'
-import AvatarIcon from "../components/MyAvatar.tsx";
-import Setting from "../components/Setting.tsx";
+import AvatarIcon from "../components/MyAvatar";
+import Setting from "../components/Setting";
 import {Outlet} from "react-router-dom";
-import Language from "../components/Language.tsx";
-import Logo from "../components/Logo.tsx";
+import Language from "../components/Language";
+import Logo from "../components/Logo";
 import MyMenu from "../components/Menu";
 import MyTabs from "../components/Tabs";
 import Breadcrumb from "../components/Breadcrumb";
-import PropTypes from 'prop-types';
 
 const {Header, Content, Sider} = Layout
-
-function Index({showTabs, showBreadcrumb}) {
+interface IndexInterface {
+    showTabs: boolean;
+    showBreadcrumb: boolean;
+}
+const Index = (props:IndexInterface) => {
+    let {showTabs, showBreadcrumb} = props
     return (
         <>
             <Layout>
@@ -49,8 +51,4 @@ function Index({showTabs, showBreadcrumb}) {
     )
 }
 
-Index.propTypes = {
-    showTabs: PropTypes.bool.isRequired,
-    showBreadcrumb: PropTypes.bool.isRequired,
-};
 export default Index

@@ -1,5 +1,11 @@
 import axios from "axios";
 
+interface ApiResponse<T = any> {
+    code: number;
+    msg: string;
+    data: T
+}
+
 const service = axios.create({
     baseURL: import.meta.env.VITE_REACT_APP_API_URL,
     timeout: 5000
@@ -55,8 +61,8 @@ service.interceptors.response.use(
 )
 
 // 自定义上传文件
-export const postFile = (url: string, data?: any) =>{
-    return service.post(url, data,{
+export const postFile = <T = ArrayBuffer>(url: string, data?: any):Promise<T> => {
+    return service.post(url, data, {
         headers: {
             'Content-Type': 'multipart/form-data',
         },
@@ -64,9 +70,9 @@ export const postFile = (url: string, data?: any) =>{
     })
 }
 
-export const get = (url: string, params?: any) => {
+export const get = <T = any>(url: string, params?: any):Promise<ApiResponse<T>> => {
     return service.get(url, {params})
 }
-export const post = (url: string, data?: any) => {
+export const post =<T = any>(url: string, data?: any):Promise<ApiResponse<T>> => {
     return service.post(url, data)
 }

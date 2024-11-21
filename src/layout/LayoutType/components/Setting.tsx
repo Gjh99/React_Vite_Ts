@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {SettingOutlined} from '@ant-design/icons';
 import {Card, Divider, Drawer, Flex, Switch} from 'antd'
 import {
@@ -12,11 +12,15 @@ import './index.less'
 import DefaultLayout from '@/assets/image/DefaultLayout.png'
 import SlideLayout from '@/assets/image/SlideLayout.png'
 import TopLayout from '@/assets/image/TopLayout.png'
+import {RootState} from "@/redux/interface";
+import {PropsInterFace} from "@/interfaces/common";
 
-const {Meta} = Card
+const {Meta} = Card;
 
-function Setting(props: any) {
-    let {type, setLayout, setTheme, isDarkMode, setShowTab, showTabs, setShowBreadcrumb, showBreadcrumb} = props
+type SettingInterface = Pick<PropsInterFace, 'systemType' | 'setLayout' | 'isDarkMode'
+    | 'setTheme' | 'showTabs' | 'setShowTab' | 'showBreadcrumb' | 'setShowBreadcrumb'>
+const Setting = (props: SettingInterface) => {
+    let {systemType, setLayout, setTheme, isDarkMode, setShowTab, showTabs, setShowBreadcrumb, showBreadcrumb} = props
     const [drawerOpen, setDrawerOpen] = useState(false)
     console.log('type', props)
     const showSetting = () => {
@@ -80,7 +84,7 @@ function Setting(props: any) {
                     {
                         layoutStyleImg.map((item, index) => {
                             return (
-                                <Card key={index} className={`pointer ${type == item.name ? 'layoutActive' : ''}`}
+                                <Card key={index} className={`pointer ${systemType == item.name ? 'layoutActive' : ''}`}
                                       onClick={() => setLayout(item.name)} hoverable={true}
                                       cover={<img src={item.image}/>}
                                 >
@@ -122,7 +126,7 @@ function Setting(props: any) {
     )
 }
 
-const mapStateToProps = (state) => state.global
+const mapStateToProps = (state: RootState) => state.global
 
 const mapDispatchToProps = {setLayout, setTheme, setShowTab, setShowBreadcrumb}
 

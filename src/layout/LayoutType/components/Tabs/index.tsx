@@ -7,20 +7,24 @@ import {searchRoute} from "@/utils";
 import {setTabsRoute} from "../../../../redux/modules/tabs/action"
 import {connect} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {RootState, TabsList} from "@/redux/interface";
+import {PropsInterFace} from "@/interfaces/common";
 
 type TargetKey = React.MouseEvent | React.KeyboardEvent | string;
 
-const MyTabs = (props: PropsInterFace) => {
+type MyTabsInterface = Pick<PropsInterFace, 'tabsRouteArray' | 'setTabsRoute'>
+
+const MyTabs = (props: MyTabsInterface) => {
     let {tabsRouteArray, setTabsRoute} = props
-    const [defaultTabsList, setTabsList] = useState([...tabsRouteArray])
-    const [activeKey, setActiveKey] = useState();
+    // const [defaultTabsList, setTabsList] = useState([...tabsRouteArray])
+    const [activeKey, setActiveKey] = useState<string>();
     // const [setTabItems] = useState(tabsRouteArray);
     const {pathname} = useLocation()
     const route = searchRoute(pathname, rootRouter);
     const navigate = useNavigate()
-    const generateKey = (pathName) => `${pathName}-${Math.random()}`;
+    const generateKey = (pathName: string) => `${pathName}-${Math.random()}`;
 
-    const handleTabList = (prevTabsList, title, pathName) => {
+    const handleTabList = (prevTabsList: TabsList[], title: string, pathName: string) => {
         const isPathInTabs = prevTabsList.some(tab => tab.pathName === pathName);
         if (isPathInTabs) {
             return prevTabsList;
@@ -38,31 +42,31 @@ const MyTabs = (props: PropsInterFace) => {
         let {meta} = route
         const currentPath = pathname;
         const tabTitle = currentPath === '/home' ? '首页' : `${meta.title}`;
-        const newTabsList = handleTabList(defaultTabsList, tabTitle, currentPath);
-        const nowActiveTabsItem = newTabsList.filter(item => item.pathName == currentPath)
-
-        setActiveKey(nowActiveTabsItem[0].key)
-        setTabsList(newTabsList)
+        const newTabsList = handleTabList(tabsRouteArray, tabTitle, currentPath);
+        const activeTab = newTabsList.find(tab => tab.pathName === pathname);
+        setActiveKey(activeTab?.key)
     }, [pathname]);
 
-    const processedTabsList = defaultTabsList.map(({title, pathName, key}) => ({
+    const processedTabsList = tabsRouteArray.map(({title, pathName, key}) => ({
         label: title,
         pathName,
         key,
         closable: pathName !== '/home',
     }));
 
-    const onChange = (activeKey) => {
-        const nowPanes = defaultTabsList.filter((pane) => pane.key == activeKey);
-        navigate(nowPanes[0].pathName)
-        setActiveKey(nowPanes[0].key);
+    const onChange = (activeKey: string) => {
+        const nowPanes = tabsRouteArray.find(tab => tab.key === activeKey);
+        if (nowPanes) {
+            navigate(nowPanes.pathName)
+        }
+        setActiveKey(nowPanes?.key);
     };
 
     const remove = (targetKey: TargetKey) => {
-        const nowPanes = defaultTabsList.filter((pane) => pane.key !== targetKey);
+        const nowPanes = tabsRouteArray.filter((pane) => pane.key !== targetKey);
         if (nowPanes.length > 0) {
             navigate(nowPanes[nowPanes.length - 1].pathName)
-            setTabsList([...nowPanes])
+            // setTabsList([...nowPanes])
             setTabsRoute([...nowPanes])
         }
     };
@@ -87,7 +91,9 @@ const MyTabs = (props: PropsInterFace) => {
 
 }
 
-const mapStateToProps = (state) => state.tabs
+const mapStateToProps = (state: RootState) => ({
+    tabsRouteArray: state.tabs?.tabsRouteArray || []
+})
 
 const mapDispatchToProps = {setTabsRoute}
 

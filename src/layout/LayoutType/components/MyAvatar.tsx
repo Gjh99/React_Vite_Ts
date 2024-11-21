@@ -1,4 +1,3 @@
-import React from "react";
 import '../DefaultLayout/index.less'
 import {Avatar, Dropdown} from "antd";
 import reactImg from '@/assets/react.svg'
@@ -15,7 +14,7 @@ function AvatarIcon() {
             label: <div>退出登录</div>
         },
     ]
-    const handleMenuClick = (e) => {
+    const handleMenuClick = (e:any) => {
         if (e.key == 2) {
             console.log(e.key)
         }
