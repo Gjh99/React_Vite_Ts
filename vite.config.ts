@@ -6,6 +6,15 @@ import {ViteMockOptions, viteMockServe} from "vite-plugin-mock";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+    server:{
+      proxy:{
+          '/api':{
+              target:'http://localhost:5000',
+              changeOrigin: true,
+              rewrite: (path) => path.replace(/^\/api/, '')
+          }
+      }
+    },
     plugins: [
         react(),
         eslintPlugin({
@@ -23,7 +32,8 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            '@': resolve(__dirname, 'src')
+            '@': resolve(__dirname, 'src'),
+            '@ant-design/icons-svg': resolve(__dirname, 'node_modules/@ant-design/icons-svg')
         }
     },
     css: {

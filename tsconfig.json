@@ -10,13 +10,18 @@
       "@/*": ["src/*"],
       "@ant-design/icons": ["node_modules/@ant-design/icons"]
     },
-    "types": ["msw"],
+    "types": ["msw", "vite/client"],
     "jsx": "react-jsx",
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "module": "ESNext",
+    "target": "ESNext",
+    "lib": ["DOM", "ESNext"]
   },
   "include": [
-    "src/**/*" // 确保这里包含了你的代码文件
+    "src/**/*", // 确保这里包含了你的代码文件
+    "node_modules/vite"
   ],
   "exclude": [
     "node_modules",        // 排除 node_modules
