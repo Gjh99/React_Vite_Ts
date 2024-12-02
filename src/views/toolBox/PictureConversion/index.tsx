@@ -118,9 +118,6 @@ const PictureConversion: React.FC = () => {
                         <InboxOutlined/>
                     </p>
                     <p className="ant-upload-text">点击或拖拽文件到此区域进行上传</p>
-                    <p className="ant-upload-hint">
-                        支持单个或批量上传。严格禁止上传公司数据或其他禁止上传的文件。
-                    </p>
                 </Dragger>
             </div>
         </div>
