@@ -5,6 +5,7 @@ import sharp from 'sharp';
 import pngToIco from 'png-to-ico';
 import { Request,Response } from "express";
 import { sendResponse } from "../common";
+// import icojs from 'icojs';
 
 // 设置默认的高质量值
 const DEFAULT_QUALITY = 90;
@@ -21,7 +22,7 @@ export class ToolBoxService {
     public async processImage(req:Request, res:Response) {
         const {format, imgWidth, imgHeight} = req.body;
         const file = req.file;
-        try {
+        // try {
             if (!file) {
                 return sendResponse(res, 400,'未上传图片',null )
             }
@@ -44,7 +45,7 @@ export class ToolBoxService {
             // ico转换png、jpeg、jpg
             if (file.mimetype === 'image/x-icon') {
                 const icojs = await import('icojs');
-                const iconImages = await icojs.parseICO(file.buffer);
+                const iconImages = icojs.parseICO(file.buffer);
 
                 if (!iconImages || iconImages.length === 0) {
                    return sendResponse(res, 400,'无法解析 ICO 文件',null )
@@ -76,9 +77,9 @@ export class ToolBoxService {
             } catch (err) {
                 return sendResponse(res, 400,'转换为 ICO 时出错',null );
             }
-        } catch (e) {
+        // } catch (e) {
             return sendResponse(res, 400,'处理图像时出错',null );
-        }
+        // }
 
     }
 }
