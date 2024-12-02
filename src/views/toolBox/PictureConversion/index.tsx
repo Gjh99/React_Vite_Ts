@@ -52,11 +52,16 @@ const PictureConversion: React.FC = () => {
 
     const uploadImage = async (data: any) => {
         let res = await processImage(data);
+        let {code, msg} = res
+        if (code == 500) {
+            message.error(msg);
+            return
+        }
         downloadImage(res as any, handleImgForm.format);
     }
 
     const downloadImage = (iamge: ArrayBuffer, format: string) => {
-        const url = URL.createObjectURL(new Blob([iamge], { type: `image/${format}` }));
+        const url = URL.createObjectURL(new Blob([iamge], {type: `image/${format}`}));
         const a = document.createElement('a');
         a.href = url;
         a.download = `processed-image.${format}`;
