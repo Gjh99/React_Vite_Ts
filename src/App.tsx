@@ -5,12 +5,13 @@ import zhCN from 'antd/locale/zh_CN';
 import enUS from "antd/lib/locale/en_US";
 // for date-picker i18n
 import 'dayjs/locale/zh-cn';
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {getBrowserLang} from "./utils";
 import i18n from "i18next";
-import {setLanguage, setTheme} from "./redux/modules/global/action.ts";
+import {setLanguage, setTheme} from "./redux/modules/global/action";
 import {connect} from "react-redux";
-import AuthRouter from "./router/authRouter.tsx";
+import AuthRouter from "./router/authRouter";
+import {RootState} from "@/redux/interface";
 
 function App(props: any) {
     console.log('props', props)
@@ -53,7 +54,7 @@ function App(props: any) {
     )
 }
 
-const mapStateToProps = (state) => state.global
+const mapStateToProps = (state:RootState) => state.global
 
 const mapDispatchToProps = {setTheme, setLanguage}
 
