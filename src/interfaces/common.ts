@@ -12,7 +12,7 @@ export interface PropsInterFace {
     TabsList: TabsList[];
     tabsRouteArray: TabsList[];
     setTabsRoute: (TabsList: TabsList[]) => void;
-    menuList: TabsList[];
+    menuList: MenuList[];
     setMenu: (TabsList: MenuList[]) => void;
     showTabs: boolean;
     setShowTab: (Tabs: boolean) => void;
