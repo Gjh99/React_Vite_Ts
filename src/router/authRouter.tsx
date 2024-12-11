@@ -5,7 +5,7 @@ import {store} from "@/redux/index"
 import {Navigate, useLocation} from "react-router";
 import { rootRouter } from "@/router/index";
 import {searchRoute} from "../utils";
-const AuthRouter = (props: { children }) =>{
+const AuthRouter = (props: { children:any }) =>{
     console.log('路由守卫', props.children)
     const { pathname } = useLocation();
     const route = searchRoute(pathname, rootRouter);
@@ -16,7 +16,8 @@ const AuthRouter = (props: { children }) =>{
 
     console.log('store', store.getState())
 
-    const token = store.getState().auth?.token
+    // @ts-ignore
+    const token = store.getState().auth.token
     console.log('token', token)
 
     if (!token) {

@@ -1,11 +1,11 @@
 import {applyMiddleware, combineReducers, createStore, compose} from "redux";
-import persistConfig from "./persistConfig.ts"; // 默认使用localStorage
+import persistConfig from "./persistConfig"; // 默认使用localStorage
 import { persistStore, persistReducer } from 'redux-persist';
 import { thunk } from "redux-thunk";
 import promise from 'redux-promise';
-import global from "./modules/global/reducer.ts";
-import auth from "./modules/auth/reducer.ts";
-import tabs from "./modules/tabs/reducer.ts";
+import global from "./modules/global/reducer";
+import auth from "./modules/auth/reducer";
+import tabs from "./modules/tabs/reducer";
 
 const middleWares = applyMiddleware(thunk, promise)
 
@@ -16,6 +16,7 @@ const reducer= combineReducers({
     tabs
 })
 
+// @ts-ignore
 const persistedReducer =  persistReducer(persistConfig, reducer)
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
@@ -23,6 +24,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const store = createStore(persistedReducer, composeEnhancers(middleWares))
 
 // 创建持久化store
+// @ts-ignore
 const persistor = persistStore(store);
 
 export { store, persistor };
