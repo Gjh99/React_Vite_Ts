@@ -44,7 +44,7 @@ const PictureConversion: React.FC = () => {
             return false;
         },
         fileList,
-        accept: '.jpg,.png,.jpeg,.webp,.avif,.ico',
+        accept: '.jpg,.png,.jpeg,.webp,.avif',
     };
     const onFinish: FormProps<FormType>['onFinish'] = (values) => {
         console.log('Success:', values);
