@@ -139,7 +139,7 @@ const user: React.FC = () => {
                         record.user_name !== 'admin' ?
                             <Space size="middle">
                                 <a onClick={() => editFn(record)}>修改</a>
-                                <a onClick={()=>userDeleteFn([record.id])} style={{color: "#ff4d4f"}}>删除</a>
+                                <a onClick={() => userDeleteFn([record.id])} style={{color: "#ff4d4f"}}>删除</a>
                             </Space> : <Space></Space>
                     }
                 </div>
@@ -320,7 +320,7 @@ const user: React.FC = () => {
         }),
     };
 
-    const onRowClick = (record: DataType, e:React.MouseEvent<HTMLElement>) => {
+    const onRowClick = (record: DataType, e: React.MouseEvent<HTMLElement>) => {
         if (e.target instanceof HTMLElement && e.target.closest('a')) {
             return;
         }
