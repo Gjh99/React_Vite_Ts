@@ -1,3 +1,5 @@
+import {DictDataInterFace} from "@/interfaces/common";
+
 /**
  * @description 获取浏览器默认语言
  * @return string
@@ -46,4 +48,15 @@ export const arrayBufferToBase64 = (buffer: ArrayBuffer) => {
         binaryString += String.fromCharCode(uint8Array[i]);
     }
     return window.btoa(binaryString);
+}
+
+/**
+ * @description 字典转换
+ * @param {dictData}  array
+ * @param {id}  number
+ * @return label
+ */
+export const transformDictData = (dictData: DictDataInterFace[], id: number) => {
+    const item: DictDataInterFace | undefined = dictData.find(item => item.id == id)
+    return item?.label
 }

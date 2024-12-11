@@ -17,3 +17,9 @@ export interface PropsInterFace {
     showTabs: boolean;
     setShowTab: (Tabs: boolean) => void;
 }
+
+export interface DictDataInterFace {
+    id: number;
+    label: string;
+    value: string
+}
