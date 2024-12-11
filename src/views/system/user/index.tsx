@@ -24,15 +24,16 @@ import {
     Modal,
     UploadProps,
     message,
-    Upload
+    Upload, Space
 } from 'antd';
 import type {GetProp, TableColumnsType, TableProps} from 'antd';
-import {getUserInfoList, uploadUserTemplate, userEdit} from "@/api/user";
+import {getDictDataList, getUserInfoList, uploadUserTemplate, userDelete, userEdit} from "@/api/user";
 import moment from 'moment';
 import {createStyles} from 'antd-style';
 import {download} from "@/utils/request";
 import FormModal from "@/views/system/user/component/FormModal";
 import {getRoleList} from "@/api/role";
+import {transformDictData} from "@/utils";
 
 const {Option} = Select;
 const {RangePicker} = DatePicker;
@@ -64,6 +65,7 @@ interface DataType {
     user_name: string;
     nick_name: string;
     user_age: number;
+    user_sex: number;
     phone_number: number;
     status: boolean;
     create_time: string;
@@ -76,8 +78,9 @@ interface TableParams {
 const user: React.FC = () => {
     const {styles} = useStyle();
     const [role, setRole] = useState([])
+    const [dictData, setDictData] = useState([])
     const [form] = Form.useForm();
-    const [userTable, setUserTable] = useState([]);
+    const [userTableData, setUserTableData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [tableParams, setTableParams] = useState<TableParams>({
         pagination: {
@@ -88,6 +91,7 @@ const user: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState('新增');
     const formModalRef = useRef<any>(null);
+    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
     const columns: TableColumnsType<DataType> = [
         {
@@ -106,6 +110,9 @@ const user: React.FC = () => {
         {
             title: '性别',
             dataIndex: 'user_sex',
+            render: (_, record: DataType) => (
+                transformDictData(dictData, record.user_sex)
+            )
         },
         {
             title: '手机号',
@@ -115,13 +122,29 @@ const user: React.FC = () => {
             title: '是否启用',
             dataIndex: 'status',
             render: (_, record) => (
-                <Switch checked={record.status} onChange={(checked) => enableChange(checked, record)}/>
+                record.user_name !== 'admin' ?
+                    <Switch checked={record.status} onChange={(checked) => enableChange(checked, record)}/> : ''
             ),
         },
         {
             title: '创建时间',
             dataIndex: 'create_time',
         },
+        {
+            title: '操作',
+            key: 'action',
+            render: (_, record) => (
+                <div>
+                    {
+                        record.user_name !== 'admin' ?
+                            <Space size="middle">
+                                <a onClick={() => editFn(record)}>修改</a>
+                                <a onClick={()=>userDeleteFn([record.id])} style={{color: "#ff4d4f"}}>删除</a>
+                            </Space> : <Space></Space>
+                    }
+                </div>
+            ),
+        }
     ];
 
     const onSearch = () => {
@@ -155,7 +178,7 @@ const user: React.FC = () => {
                 update_time: moment(user.update_time).format('YYYY-MM-DD HH:mm:ss')
             }));
             setLoading(false);
-            setUserTable(data)
+            setUserTableData(data)
             setTableParams({
                 ...tableParams,
                 pagination: {
@@ -194,6 +217,9 @@ const user: React.FC = () => {
         if (code == 200) {
             getUserInfoListFn()
             message.success(msg);
+            if (data.id) {
+                formModalRef.current.modalIsOpen()
+            }
         } else {
             message.error(msg)
         }
@@ -202,7 +228,37 @@ const user: React.FC = () => {
     // 新增
     const addUserFn = () => {
         setModalTitle('新增')
-        formModalRef.current.modalOpen()
+        formModalRef.current.modalIsOpen()
+    }
+
+    // 修改
+    const editFn = (val: DataType | string) => {
+        setModalTitle('修改')
+        let nowItemData = null
+        if (!val) {
+            // @ts-ignore
+            nowItemData = userTableData.find(item => item.id == selectedRowKeys)
+        } else {
+            nowItemData = val
+        }
+        formModalRef.current.modalIsOpen(nowItemData)
+    }
+
+    // 删除
+    const deleteFn = () => {
+        userDeleteFn(selectedRowKeys)
+    }
+
+    const userDeleteFn = async (userIds: React.Key[]) => {
+        let idList = userIds.map(item => Number(item))
+        let res = await userDelete({userIds: idList})
+        let {code, msg} = res
+        if (code == 200) {
+            getUserInfoListFn()
+            message.success(msg);
+        } else {
+            message.error(msg)
+        }
     }
 
     // 导入
@@ -228,15 +284,23 @@ const user: React.FC = () => {
     }
 
     const getRoleListFn = async () => {
-      let res = await getRoleList();
-      let {code,data} = res;
-      if (code == 200) {
-          setRole(data)
-      }
+        let res = await getRoleList();
+        let {code, data} = res;
+        if (code == 200) {
+            setRole(data)
+        }
+    }
+    const getDictDataListFn = async (val: any) => {
+        let res = await getDictDataList(val);
+        let {code, data} = res;
+        if (code == 200) {
+            setDictData(data)
+        }
     }
 
     useEffect(() => {
         getRoleListFn()
+        getDictDataListFn({dict_type: 'user_sex'})
     }, []);
 
     const downloadTemplateFn = () => {
@@ -244,6 +308,30 @@ const user: React.FC = () => {
             type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         })
     }
+
+    const rowSelection: TableProps<DataType>['rowSelection'] = {
+        selectedRowKeys,
+        onChange: (selectedRowKeys: React.Key[]) => {
+            setSelectedRowKeys(selectedRowKeys)
+        },
+        getCheckboxProps: (record: DataType) => ({
+            disabled: record.user_name === 'admin', // Column configuration not to be checked
+            name: record.user_name,
+        }),
+    };
+
+    const onRowClick = (record: DataType, e:React.MouseEvent<HTMLElement>) => {
+        if (e.target instanceof HTMLElement && e.target.closest('a')) {
+            return;
+        }
+
+        if (record.user_name == 'admin') return
+        const {id} = record;
+        const isSelected = selectedRowKeys.includes(id)
+        const newSelectedKeys = isSelected ? selectedRowKeys.filter((key) => key !== id) // 取消选中
+            : [...selectedRowKeys, id];
+        setSelectedRowKeys(newSelectedKeys);
+    };
 
     return (
         <div className="user h100">
@@ -253,6 +341,7 @@ const user: React.FC = () => {
                     form={form}
                     initialValues={{layout: 'horizontal'}}
                     colon={false}
+                    autoComplete="off"
                 >
                     <Col span={5}>
                         <Form.Item label="用户名称" name="nick_name">
@@ -297,9 +386,15 @@ const user: React.FC = () => {
                                 borderColor: '#69c91d',
                                 color: '#69c91d',
                             }}>新增</Button>
-                    <Button color="primary" icon={<EditOutlined/>} variant="outlined">修改</Button>
+                    <Button
+                        color="primary" icon={<EditOutlined/>} variant="outlined"
+                        disabled={selectedRowKeys.length == 0 || selectedRowKeys.length > 1}
+                        onClick={() => editFn('')}
+                    >修改</Button>
 
-                    <Button color="danger" icon={<DeleteOutlined/>} variant="outlined">删除</Button>
+                    <Button color="danger" icon={<DeleteOutlined/>} variant="outlined"
+                            onClick={deleteFn}
+                    >删除</Button>
                     <Button color="primary" icon={<VerticalAlignTopOutlined/>} variant="outlined"
                             onClick={uploadFn}
                             style={{
@@ -316,18 +411,25 @@ const user: React.FC = () => {
             </div>
             <div className="table mt10">
                 <Table<DataType>
+                    rowSelection={{type: 'checkbox', ...rowSelection}}
                     className={styles.customTable}
                     rowKey={(record) => record.id}
                     loading={loading}
                     columns={columns}
-                    dataSource={userTable}
+                    dataSource={userTableData}
                     pagination={tableParams.pagination}
                     onChange={handleTableChange}
                     scroll={{y: 100 * 5}}
+                    onRow={(record) => ({
+                        onClick: (e) => onRowClick(record, e),
+                    })}
                 />
             </div>
             {/*新增 修改*/}
-            <FormModal ModalTitle={modalTitle} RoleOption={role} ref={formModalRef}/>
+            <FormModal
+                ModalTitle={modalTitle} RoleOption={role} DictDataOption={dictData}
+                ref={formModalRef} userInfoList={getUserInfoListFn} editDataFn={userEditFn}
+            />
             {/*导入*/}
             <Modal title="文件上传" open={isModalOpen} footer={null} centered>
                 <Dragger {...uploadProps} maxCount={1}>

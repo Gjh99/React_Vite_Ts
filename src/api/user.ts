@@ -28,3 +28,13 @@ export const userEdit = async (data?: any) =>{
    const res = await  post('/user/edit', data)
    return res
 }
+
+export const userDelete = async (data?: any) =>{
+   const res = await  post('/user/delete', data)
+   return res
+}
+
+export const getDictDataList = async (params?: any) =>{
+   const res = await  get('/dict/dictDataList', params)
+   return res
+}
