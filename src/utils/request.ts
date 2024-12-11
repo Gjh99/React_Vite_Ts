@@ -1,8 +1,12 @@
 import axios from "axios";
+import {store} from "@/redux";
 
 interface ApiResponse<T = any> {
     code: number;
     msg: string;
+    pageSize: number;
+    totalCount: number;
+    totalPages: number;
     data: T
 }
 
@@ -14,7 +18,9 @@ const service = axios.create({
 // 请求拦截
 service.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('token');
+        // @ts-ignore
+        const token = store.getState().auth?.token;
+        console.log('token', token)
         if (token) {
             config.headers['Authorization'] = `Bearer ${token}`
         }
@@ -47,7 +53,7 @@ service.interceptors.response.use(
             switch (error.response.status) {
                 case 401:
                     console.warn('未授权，请重新登录');
-                    window.location.href = '/login';
+                    // window.location.href = '/login';
                     break;
                 case 500:
                     console.error('服务器内部错误');
@@ -61,13 +67,27 @@ service.interceptors.response.use(
 )
 
 // 自定义上传文件
-export const postFile = <T = ArrayBuffer>(url: string, data?: any):Promise<T> => {
+export const postFile = <T = ArrayBuffer>(url: string, data?: any):Promise<ApiResponse<T>> => {
     return service.post(url, data, {
         headers: {
             'Content-Type': 'multipart/form-data',
         },
         responseType: 'arraybuffer', // 获取二进制数据
     })
+}
+
+// 通用下载方法
+export async function download(url: string, fileName: string, BlobConfig: any, data?: any) {
+    return service.post(url, data, { responseType: 'blob' }).then(response => {
+        // @ts-ignore
+        const url = window.URL.createObjectURL(new Blob([response],BlobConfig));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', fileName);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+    });
 }
 
 export const get = <T = any>(url: string, params?: any):Promise<ApiResponse<T>> => {
