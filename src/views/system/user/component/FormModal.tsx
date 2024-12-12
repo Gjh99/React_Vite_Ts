@@ -1,5 +1,5 @@
-import {Col, Form, Input, message, Modal, Row, Select, Switch} from "antd";
-import {useImperativeHandle, useState, forwardRef} from "react";
+import {Col, Form, Input, InputNumber, message, Modal, Row, Select, Switch} from "antd";
+import {useImperativeHandle, useState, forwardRef, useEffect} from "react";
 import {userAdd} from "@/api/user";
 
 type roleType = {
@@ -8,47 +8,76 @@ type roleType = {
     status: boolean;
 }
 
+type dictType = {
+    id: number;
+    data_label: string;
+    data_value: string;
+}
+
 interface FormModalInterface {
     ModalTitle: string;
     RoleOption: roleType[];
+    DictDataOption: dictType[];
+    userInfoList: () => void;
+    editDataFn: (data:any) => void;
 }
 
 interface FormModalRef {
     addHandleOk: () => void;
-    modalOpen: () => void;
+    modalIsOpen: (val:any) => void;
 }
 
-const FormModal = forwardRef<FormModalRef, FormModalInterface>(({ModalTitle, RoleOption}, ref) => {
-    // let {ModalTitle} = props
+const FormModal = forwardRef<FormModalRef, FormModalInterface>(({
+                                                                    ModalTitle,
+                                                                    RoleOption,
+                                                                    DictDataOption,
+                                                                    userInfoList,
+                                                                    editDataFn
+                                                                }, ref) => {
     const [modalForm] = Form.useForm();
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [formItem, setFormItem] = useState()
 
     useImperativeHandle(ref, () => ({
         addHandleOk: () => addHandleOk(),
-        modalOpen: () => modalOpen()
+        modalIsOpen: (val:any) => modalIsOpen(val)
     }))
 
-    const modalOpen = () => {
-        setIsAddModalOpen(true)
+    const modalIsOpen = (val:any) => {
+        if (val) {
+            setFormItem(val)
+        }
+        console.log('val',val)
+        setIsAddModalOpen(!isAddModalOpen)
     }
+    useEffect(() => {
+        console.log('formItem',formItem)
+        if (formItem) {
+            modalForm.setFieldsValue(formItem)
+        }
+    }, [formItem])
 
     const addHandleOk = async () => {
-        try {
-            const validate = await modalForm.validateFields();
-            console.log('validate', validate)
-            if (validate) {
-                return
-            }
-            const values = modalForm.getFieldsValue();
+        const validate = await modalForm.validateFields();
+        if (validate.errorFields) {
+            return
+        }
+        const values = modalForm.getFieldsValue();
+        if (ModalTitle == '新增') {
             let res = await userAdd(values)
             let {code, msg} = res
             if (code == 200) {
+                modalForm.resetFields();
+                userInfoList()
+                setIsAddModalOpen(false)
                 message.success(msg);
             } else {
                 message.error(msg)
             }
-        } catch (e) {
-            console.log('Failed:', e);
+        } else {
+            // @ts-ignore
+            values.id = formItem?.id
+            editDataFn(values)
         }
     }
 
@@ -71,6 +100,7 @@ const FormModal = forwardRef<FormModalRef, FormModalInterface>(({ModalTitle, Rol
                 name="userForm"
                 labelCol={{span: 4}}
                 wrapperCol={{span: 20}}
+                autoComplete="off"
                 initialValues={{
                     status: true
                 }}
@@ -91,7 +121,7 @@ const FormModal = forwardRef<FormModalRef, FormModalInterface>(({ModalTitle, Rol
                             label="密码"
                             rules={[{required: true, message: '请输入密码!'}]}
                         >
-                            <Input/>
+                            <Input.Password disabled={ModalTitle !== '新增'}/>
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -115,7 +145,13 @@ const FormModal = forwardRef<FormModalRef, FormModalInterface>(({ModalTitle, Rol
                             name="user_sex"
                             label="性别"
                         >
-                            <Select/>
+                            <Select
+                                options={DictDataOption}
+                                fieldNames={{
+                                    value: 'id',
+                                    label: 'label'
+                                }}
+                            />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -123,7 +159,7 @@ const FormModal = forwardRef<FormModalRef, FormModalInterface>(({ModalTitle, Rol
                             name="user_age"
                             label="年龄"
                         >
-                            <Input/>
+                            <InputNumber min={1} style={{width: '100%'}}/>
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -136,7 +172,7 @@ const FormModal = forwardRef<FormModalRef, FormModalInterface>(({ModalTitle, Rol
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            name="role"
+                            name="roleId"
                             label="角色"
                             rules={[{required: true, message: '请选择角色!'}]}
                         >
