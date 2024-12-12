@@ -1,5 +1,5 @@
 import axios from "axios";
-import {store} from "@/redux";
+import {getToken} from "@/utils/cookie";
 
 interface ApiResponse<T = any> {
     code: number;
@@ -18,12 +18,12 @@ const service = axios.create({
 // 请求拦截
 service.interceptors.request.use(
     (config) => {
-        // @ts-ignore
-        const token = store.getState().auth?.token;
+        const token = getToken();
         console.log('token', token)
         if (token) {
             config.headers['Authorization'] = `Bearer ${token}`
         }
+        console.log(config)
         return config;
     },
     (error) => {
@@ -53,11 +53,10 @@ service.interceptors.response.use(
             switch (error.response.status) {
                 case 401:
                     console.warn('未授权，请重新登录');
-                    // window.location.href = '/login';
+                    window.location.href = '/login';
                     break;
                 case 500:
-                    console.error('服务器内部错误');
-                    break;
+                    return error.response.data
                 default:
                     console.error('其他错误', error.response.data.message);
             }
