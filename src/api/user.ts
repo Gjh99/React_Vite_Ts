@@ -1,5 +1,15 @@
 import {get, postFile, post} from "@/utils/request";
 
+export const login = async (data?: any) =>{
+   const res = await  post('/user/login', data)
+   return res
+}
+
+export const logout = async (data?: any) =>{
+   const res = await  post('/user/logout', data)
+   return res
+}
+
 export const getMenu = async () =>{
    const res = await  get('/menu')
    return res
