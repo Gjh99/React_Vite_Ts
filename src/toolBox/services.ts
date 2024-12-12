@@ -58,7 +58,7 @@ export class ToolBoxService {
                 //     res.set('Content-Type', `image/${outputFormat}`);
                 //     return res.status(200).send(buffer);
                 // } else {
-                    return sendResponse(res, 500,'不支持的ICO转换格式',null );
+                    // return sendResponse(res, 500,'不支持的ICO转换格式',null );
                 // }
             }
 

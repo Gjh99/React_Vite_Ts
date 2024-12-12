@@ -1,4 +1,3 @@
-
 import { inject, injectable } from "inversify";
 import { PrismaDB } from '../db'
 import { AddUserDto, UserDto } from './user.dto'
@@ -20,7 +19,19 @@ export class UserService {
     /**
      * login
      */
-    public async login(data: UserDto, res) {
+    public async login(req, res) {
+        let {body:data, session} = req;
+
+        if (!session.captcha) {
+            return sendResponse(res, 500, "验证码已失效，请刷新后重试");
+        }
+        console.log(data.captcha.toLowerCase());
+        console.log(session.captcha);
+        
+
+        if (data.captcha.toLowerCase() !== session.captcha) {
+            return sendResponse(res, 500, '验证码错误')
+        }
         const LoginDto = plainToClass(UserDto, data)
         const errors = await validate(LoginDto)
         if (errors.length) {
@@ -45,8 +56,21 @@ export class UserService {
         //密码通过，生成tk
         const token = await this.jwt.createToken({ userId: user.id })
 
-        return { token }
+        return sendResponse(res, 200, '登录成功', token)
     }
+
+    /**
+     * 退出登录
+     */
+    public async logout(req, res) {
+        await req.session.destroy((err) => {
+            if (err) {
+                return  sendResponse(res, 500, '退出登录失败')
+            }
+        })
+        return sendResponse(res, 200, '退出登录成功')
+    }
+
 
     /**
      * 获取用户列表

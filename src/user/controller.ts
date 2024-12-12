@@ -4,6 +4,7 @@ import { UserService } from "./services";
 import { Request,Response } from "express";
 import { JWT } from "../jwt";
 import multer from 'multer';
+import { sendResponse } from "../common";
 const storage = multer.memoryStorage();
 const upload = multer({storage: storage});
 
@@ -25,8 +26,15 @@ export class User {
     @PostMapping('/login')
 
     public async login(req:Request, res:Response) {
-        let result =  await this.UserService.login(req.body, res)
-        return res.status(200).send(result)
+        await this.UserService.login(req, res)
+        return 
+    }
+
+    @PostMapping('/logout', JWT.middleware())
+    
+    public async logout(req:Request, res:Response) {
+        await this.UserService.logout(req, res)
+        return
     }
 
     @PostMapping('/add', JWT.middleware())
