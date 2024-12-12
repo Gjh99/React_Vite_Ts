@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  user_name    String   @unique
+  nick_name    String?
+  user_sex     Int?
+  user_age     Int?
+  password     String?
+  phone_number String?
+  status       Boolean  @default(true)
+  create_time  DateTime @default(now())
+  update_time  DateTime @default(now()) @updatedAt
+  roleId       Int
+  role         Role?    @relation(fields: [roleId], references: [id])
+  createdById  Int?
+  createdBy    User?    @relation("UserCreator", fields: [createdById], references: [id])
+  createdUsers User[]   @relation("UserCreator")
+
+  // 反向关系
+  createdRoles     Role[]     @relation("RoleCreator")
+  createdDictTypes DictType[] @relation("DictTypeCreator")
+  createdDictData  DictData[] @relation("DictDataCreator")
+}
+
+model Role {
+  id          Int      @id @default(autoincrement())
+  role_name   String   @unique
+  status      Boolean  @default(true)
+  create_time DateTime @default(now())
+  users       User[]
+  createdById Int?
+  createdBy   User?    @relation("RoleCreator", fields: [createdById], references: [id])
+}
+
+model DictType {
+  id          Int      @id @default(autoincrement())
+  dict_name   String   @unique
+  dict_type   String   @unique
+  status      Boolean  @default(true)
+  create_time DateTime @default(now())
+
+  DictData DictData[] @relation("DictTypeData")
+
+  createdById Int?
+  createdBy   User? @relation("DictTypeCreator", fields: [createdById], references: [id])
+
+  // 显式指定表名
+  @@map("dict_type")
+}
+
+model DictData {
+  id           Int      @id @default(autoincrement())
+  dict_type_id Int
+  data_label   String
+  data_value   String
+  status       Boolean  @default(true)
+  create_time  DateTime @default(now())
+
+  // 与dict_typew外键关联关系
+  DictType DictType @relation("DictTypeData", fields: [dict_type_id], references: [id])
+
+  createdById Int?
+  createdBy   User? @relation("DictDataCreator", fields: [createdById], references: [id])
+
+  // 显式指定表名
+  @@map("dict_data")
+}
