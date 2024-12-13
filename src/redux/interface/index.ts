@@ -17,7 +17,7 @@ export interface GlobalState {
 }
 
 export interface AuthState {
-    // token?: string | null;
+    token?: string | null;
     menuList: MenuList[]
 }
 
