@@ -1,11 +1,11 @@
 import {createRoot} from 'react-dom/client'
-import App from './App.tsx'
+import App from './App'
 import '@/styles/reset.less'
 import '@/styles/common.less'
 import '@/styles/theme.less'
 import '@/language/il8.ts'
 import {Provider} from 'react-redux'
-import {persistor, store} from "./redux/index.ts";
+import {persistor, store} from "./redux/index";
 import {PersistGate} from "redux-persist/integration/react";
 import '@/assets/iconfont/iconfont.css'
 
