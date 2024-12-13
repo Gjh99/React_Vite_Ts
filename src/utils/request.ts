@@ -1,5 +1,6 @@
 import axios from "axios";
 import {getToken} from "@/utils/cookie";
+import NProgress from "./nprogress"
 
 interface ApiResponse<T = any> {
     code: number;
@@ -18,6 +19,7 @@ const service = axios.create({
 // 请求拦截
 service.interceptors.request.use(
     (config) => {
+        NProgress.start()
         const token = getToken();
         console.log('token', token)
         if (token) {
@@ -34,6 +36,7 @@ service.interceptors.request.use(
 // 响应拦截
 service.interceptors.response.use(
     res => {
+        NProgress.done();
         const code = res.data.code || 200;
         const msg = res.data.msg
         if (code === 401) {
