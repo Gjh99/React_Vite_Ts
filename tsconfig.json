@@ -10,7 +10,7 @@
       "@/*": ["src/*"],
       "@ant-design/icons": ["node_modules/@ant-design/icons"]
     },
-    "types": ["msw", "vite/client"],
+    "types": ["node","msw", "vite/client"],
     "jsx": "react-jsx",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,

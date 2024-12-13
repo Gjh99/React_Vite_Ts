@@ -12,7 +12,6 @@ import {setLanguage, setTheme} from "./redux/modules/global/action";
 import {connect} from "react-redux";
 import AuthRouter from "./router/authRouter";
 import {RootState} from "@/redux/interface";
-
 function App(props: any) {
     console.log('props', props)
     let {locale, setLanguage} = props
@@ -20,13 +19,7 @@ function App(props: any) {
 
     // UI语言
     const setAntdLanguage = () => {
-        if (locale == 'zh') {
-            return seti18nLocale(zhCN)
-        } else {
-            return seti18nLocale(enUS)
-        }
-        // 系统语言
-        if (getBrowserLang() === 'zh') {
+        if (getBrowserLang() === 'zh' || locale == 'zh') {
             return seti18nLocale(zhCN)
         } else {
             return seti18nLocale(enUS)
