@@ -4,10 +4,14 @@ import reactImg from '@/assets/react.svg'
 import './index.less'
 import {logout} from "@/api/user";
 import {useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {persistor} from "@/redux";
+import {removeToken} from "@/utils/cookie";
+import {RootState} from "@/redux/interface";
+import {useSelector} from "react-redux";
 
 function AvatarIcon() {
+    const userInfo = useSelector((state: RootState) => state.auth?.userInfo);
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -31,16 +35,21 @@ function AvatarIcon() {
         let res = await logout()
         let {code, msg} = res
         if (code == 200) {
-            message.success(msg)
+            await persistor.purge()
             localStorage.clear()
-            persistor.purge()
+            removeToken()
             navigate('/login')
         } else {
             message.error(msg)
         }
     }
+
+    useEffect(() => {
+        console.log('auth-------------------', userInfo)
+    }, []);
     return (
         <>
+            <Avatar size="large" src={reactImg}/>
             <div className="avatar flx-align-center pointer">
                 <Dropdown
                     menu={{
@@ -48,9 +57,8 @@ function AvatarIcon() {
                         onClick: handleMenuClick
                     }}
                 >
-                    <Avatar size="large" src={reactImg}/>
+                    <div className="ml10 nickName fontSize16">你好，{userInfo?.nick_name}</div>
                 </Dropdown>
-                <div className="ml10 nickName">---</div>
             </div>
 
             <Modal

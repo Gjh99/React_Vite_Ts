@@ -1,8 +1,8 @@
 import React from 'react';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
-import Logo from "../components/Logo.tsx";
-import Setting from "../components/Setting.tsx";
-import AvatarIcon from "../components/MyAvatar.tsx";
+import Logo from "../components/Logo";
+import Setting from "../components/Setting";
+import AvatarIcon from "../components/MyAvatar";
 
 const { Header, Content, Footer } = Layout;
 

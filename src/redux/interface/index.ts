@@ -3,6 +3,7 @@ export interface TabsList {
     pathName: string;
     key: string;
 }
+
 export interface MenuList {
     key: string;
     label: string;
@@ -12,12 +13,21 @@ export interface GlobalState {
     systemType: string;
     isDarkMode: boolean;
     locale: string;
-    showTabs: boolean ,
+    showTabs: boolean,
     showBreadcrumb: boolean;
 }
 
+export interface userInfoInterface {
+    id: number | null;
+    user_name: string;
+    nick_name: string;
+    user_age: string;
+    user_sex: string;
+    role: any;
+}
+
 export interface AuthState {
-    token?: string | null;
+    userInfo: userInfoInterface | undefined
     menuList: MenuList[]
 }
 
@@ -26,7 +36,7 @@ interface TabsState {
 }
 
 export interface RootState {
-    tabs?:TabsState;
+    tabs?: TabsState;
     global?: GlobalState;
-    auth?:AuthState;
+    auth?: AuthState;
 }

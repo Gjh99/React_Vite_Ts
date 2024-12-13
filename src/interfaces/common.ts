@@ -1,4 +1,4 @@
-import {TabsList, MenuList} from "@/redux/interface";
+import {TabsList, MenuList, userInfoInterface} from "@/redux/interface";
 
 export interface PropsInterFace {
     systemType: string;
@@ -12,6 +12,8 @@ export interface PropsInterFace {
     TabsList: TabsList[];
     tabsRouteArray: TabsList[];
     setTabsRoute: (TabsList: TabsList[]) => void;
+    userInfo: userInfoInterface;
+    setUserInfo: (userInfo: userInfoInterface) => void;
     menuList: MenuList[];
     setMenu: (TabsList: MenuList[]) => void;
     showTabs: boolean;

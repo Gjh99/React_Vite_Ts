@@ -9,24 +9,29 @@ import {getCaptcha} from "@/api/common";
 import {useEffect, useState} from "react";
 import {login} from "@/api/user";
 import {setToken} from "@/utils/cookie";
+import {setUserInfo} from "@/redux/modules/auth/action";
+import {PropsInterFace} from "@/interfaces/common";
 
 type FieldType = {
     user_name?: string;
     password?: string;
     captcha?: string;
 };
+type MyUserInfoInterface = Pick<PropsInterFace, 'setUserInfo'>
 
-const Login = () => {
+const Login = (props: MyUserInfoInterface) => {
+    let {setUserInfo} = props
     const {t} = useTranslation();
     const navigate = useNavigate();
     const [captcha, setCaptcha] = useState('')
     const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
         console.log('Success:', values);
         let res = await login(values);
-        let {code,msg, data} = res
+        let {code, msg, data} = res
         if (code == 200) {
             console.log(data)
-            setToken(data)
+            setToken(data.token)
+            setUserInfo(data.userInfo)
             navigate('/home')
         } else {
             message.error(msg)
@@ -71,6 +76,10 @@ const Login = () => {
                                 onFinish={onFinish}
                                 autoComplete="off"
                                 size="large"
+                                initialValues={{
+                                    user_name: 'admin',
+                                    password: '123456',
+                                }}
                             >
                                 <Form.Item<FieldType>
                                     label={null}
@@ -93,7 +102,7 @@ const Login = () => {
                                     name="captcha"
                                     rules={[{required: true, message: '请输入验证码！'}]}
                                 >
-                                    <Input placeholder={"请输入验证码"} />
+                                    <Input placeholder={"请输入验证码"}/>
                                 </Form.Item>
 
                                 <Form.Item label={null}>
@@ -117,6 +126,6 @@ const Login = () => {
     )
 }
 
-const mapDispatchToProps = {setToken}
+const mapDispatchToProps = {setUserInfo}
 
 export default connect(null, mapDispatchToProps)(Login)

@@ -1,31 +1,38 @@
 import {produce} from "immer";
-import {SET_MENU} from "../mutationType";
-import {AuthState as AuthStateType, MenuList} from '@/redux/interface/index'
-import {getToken} from "@/utils/cookie";
+import {SET_MENU, SET_USERINFO} from "../mutationType";
+import {AuthState as AuthStateType, MenuList, userInfoInterface} from '@/redux/interface/index'
 
-// interface SetToken {
-//     type: typeof SET_TOKEN;
-//     token: string;
-// }
+interface SetUserInfo {
+    type: typeof SET_USERINFO;
+    userInfo: userInfoInterface;
+}
 
 interface SetMenu {
     type: typeof SET_MENU;
     menuList: MenuList[]
 }
 
- type AuthAction = SetMenu
+type AuthAction = SetMenu | SetUserInfo
 
 const authState: AuthStateType = {
-    token: getToken(),
+    userInfo: {
+        id: null,
+        user_name: '',
+        nick_name: '',
+        user_age: '',
+        user_sex: '',
+        role: null
+    },
     menuList: []
 }
 
 const auth = (state = authState, action: AuthAction) => {
     return produce(state, draftState => {
         switch (action.type) {
-            // case SET_TOKEN:
-            //     draftState.token = action.token
-            //     break;
+            case SET_USERINFO:
+                console.log('设置值')
+                draftState.userInfo = action.userInfo
+                break;
             case SET_MENU:
                 draftState.menuList = action.menuList
                 break;
