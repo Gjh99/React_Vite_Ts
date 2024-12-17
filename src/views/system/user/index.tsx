@@ -208,16 +208,16 @@ const user: React.FC = () => {
 
     const enableChange = (checked: boolean, record: DataType) => {
         record.status = checked
-        userEditFn(record)
+        userEditFn(record, 'switch')
     };
 
-    const userEditFn = async (data: DataType) => {
+    const userEditFn = async (data: DataType, type?:string) => {
         let res = await userEdit(data);
         let {code, msg} = res
         if (code == 200) {
             getUserInfoListFn()
             message.success(msg);
-            if (data.id) {
+            if (data.id && type !== 'switch') {
                 formModalRef.current.modalIsOpen()
             }
         } else {
@@ -321,6 +321,7 @@ const user: React.FC = () => {
     };
 
     const onRowClick = (record: DataType, e: React.MouseEvent<HTMLElement>) => {
+        console.log('e----------', e.target)
         if (e.target instanceof HTMLElement && e.target.closest('a')) {
             return;
         }
@@ -339,7 +340,6 @@ const user: React.FC = () => {
                 <Form
                     layout="inline"
                     form={form}
-                    initialValues={{layout: 'horizontal'}}
                     colon={false}
                     autoComplete="off"
                 >
