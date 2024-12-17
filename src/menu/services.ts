@@ -20,23 +20,16 @@ export class MenuService {
     public async getAllMenu(req, res) {
         try {
             const menus = await this.PrismaDB.prisma.menu.findMany({
+                where: { parent_id: null },
                 orderBy: {
                     order_num: 'asc'
                 },
                 include: {
-                    children: {
-                        orderBy: {
-                            order_num: 'asc'
-                        }
-                    }
+                    children: true
                 }
             });
-            const data = menus.map(menu => ({
-                ...menu,
-                children: menu.children.length > 0 ? menu.children : null,
-            }));
 
-            res.status(200).json({ code: 200, data });
+            res.status(200).json({ code: 200, menus });
         } catch (err) {
             res.status(500).json({ error: "获取菜单列表失败", details: err.message });
         }
