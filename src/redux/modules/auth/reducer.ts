@@ -30,7 +30,6 @@ const auth = (state = authState, action: AuthAction) => {
     return produce(state, draftState => {
         switch (action.type) {
             case SET_USERINFO:
-                console.log('设置值')
                 draftState.userInfo = action.userInfo
                 break;
             case SET_MENU:

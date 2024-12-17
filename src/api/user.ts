@@ -11,7 +11,7 @@ export const logout = async (data?: any) =>{
 }
 
 export const getMenu = async () =>{
-   const res = await  get('/menu')
+   const res = await  get('/menu/getMenus')
    return res
 }
 

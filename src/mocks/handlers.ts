@@ -3,7 +3,7 @@ import fs from "fs";
 
 export default [
     {
-        url: '/api/menu',
+        url: '/api/getMenus',
         method: 'get',
         response: () => {
             const dataPath = path.resolve(__dirname, './data/menu.json');

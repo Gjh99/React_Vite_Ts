@@ -12,6 +12,20 @@ interface ModeProps {
     mode: string;
 };
 
+interface MenuItem {
+    path: string;
+    menu_name: string;
+    icon?: string;
+    children?: MenuItem[] | undefined;
+}
+
+interface MenuInterface {
+    key: string;
+    label: string;
+    icon?: string;
+    children?: MenuInterface[];
+}
+
 type MyMenuInterface = Pick<PropsInterFace, 'menuList' | 'setMenu'> & ModeProps;
 
 const MyMenu = (props: MyMenuInterface) => {
@@ -26,14 +40,37 @@ const MyMenu = (props: MyMenuInterface) => {
         let res = await getMenu();
         let {code} = res;
         if (code == 200) {
-            setMenu(res.data)
-            console.log('res', props)
+            const menuItems = generateMenuItem(res.data)
+            setMenu([
+                {
+                    label: "首页",
+                    key: "/home",
+                    icon: ""
+                },...menuItems])
         }
     }
 
     useEffect(() => {
         getMenuData()
     }, [])
+
+    const generateMenuItem = (data: MenuItem[]): MenuInterface[] => {
+        return data.map(item => {
+            const menuItem: MenuInterface = {
+                key: item.path,
+                label: item.menu_name,
+                icon: item.icon,
+            };
+
+            if (item.children?.length) {
+                menuItem.children = generateMenuItem(item.children);
+            } else {
+                item.children = undefined
+            }
+
+            return menuItem;
+        });
+    }
 
     return (
         <>
