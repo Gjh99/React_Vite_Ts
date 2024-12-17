@@ -46,11 +46,14 @@ const MyTabs = (props: MyTabsInterface) => {
         const activeTab = newTabsList.find(tab => tab.pathName === pathname);
         setActiveKey(activeTab?.key)
 
+    }, [pathname]);
+
+    useEffect(()=>{
         return () =>{
             console.log('页面销毁')
             setTabsRoute([])
         }
-    }, [pathname]);
+    }, [])
 
     const processedTabsList = tabsRouteArray.map(({title, pathName, key}) => ({
         label: title,
