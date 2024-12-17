@@ -84,7 +84,7 @@ export class MenuService {
             const sortMenu = userRoles.role.role_menu.sort((a, b) => a.menu.order_num - b.menu.order_num);
             
             const menus = sortMenu.map((roleMenu) => roleMenu.menu);
-            console.log(menus);
+            // console.log(menus);
 
             let data = convertToTree(menus)
 

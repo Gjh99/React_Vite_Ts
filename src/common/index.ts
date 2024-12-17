@@ -45,11 +45,11 @@ export const convertToTree = (list = []) =>{
             // 没有父级是顶层
             res.push(itemMap[id])
         } else {
-            // if(!itemMap[pId]) {
-            //     itemMap[pId] = {
-            //         children: []
-            //     }
-            // }
+            if(!itemMap[pId]) {
+                itemMap[pId] = {
+                    children: []
+                }
+            }
             itemMap[pId].children.push(itemMap[id])
         }
     })
