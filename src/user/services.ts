@@ -20,14 +20,14 @@ export class UserService {
      * login
      */
     public async login(req, res) {
-        let {body:data, session} = req;
+        let { body: data, session } = req;
 
         if (!session.captcha) {
             return sendResponse(res, 500, "验证码已失效，请刷新后重试");
         }
         console.log(data.captcha.toLowerCase());
         console.log(session.captcha);
-        
+
 
         if (data.captcha.toLowerCase() !== session.captcha) {
             return sendResponse(res, 500, '验证码错误')
@@ -56,7 +56,22 @@ export class UserService {
         //密码通过，生成tk
         const token = await this.jwt.createToken({ userId: user.id })
 
-        return sendResponse(res, 200, '登录成功', token)
+        // 获取当前用户信息
+        const userInfo = await this.PrismaDB.prisma.user.findFirst({
+            where: { id: user.id },
+            select: {
+                id: true,
+                user_name: true,
+                nick_name: true,
+                user_age: true,
+                user_sex: true,
+                role: { 
+                    select: { role_name: true } 
+                },
+            },
+        })
+
+        return sendResponse(res, 200, '登录成功', { token, userInfo })
     }
 
     /**
@@ -65,7 +80,7 @@ export class UserService {
     public async logout(req, res) {
         await req.session.destroy((err) => {
             if (err) {
-                return  sendResponse(res, 500, '退出登录失败')
+                return sendResponse(res, 500, '退出登录失败')
             }
         })
         return sendResponse(res, 200, '退出登录成功')
@@ -218,7 +233,7 @@ export class UserService {
                 where: {
                     id: {
                         in: userIds
-                    } 
+                    }
                 }
             })
             return sendResponse(res, 200, '删除用户信息成功')

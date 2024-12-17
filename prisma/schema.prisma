@@ -36,16 +36,6 @@ model User {
   createdDictData  DictData[] @relation("DictDataCreator")
 }
 
-model Role {
-  id          Int      @id @default(autoincrement())
-  role_name   String   @unique
-  status      Boolean  @default(true)
-  create_time DateTime @default(now())
-  users       User[]
-  createdById Int?
-  createdBy   User?    @relation("RoleCreator", fields: [createdById], references: [id])
-}
-
 model DictType {
   id          Int      @id @default(autoincrement())
   dict_name   String   @unique
@@ -78,4 +68,46 @@ model DictData {
 
   // 显式指定表名
   @@map("dict_data")
+}
+
+model Role {
+  id          Int      @id @default(autoincrement())
+  role_name   String   @unique
+  status      Boolean  @default(true)
+  create_time DateTime @default(now())
+  users       User[]
+  createdById Int?
+  createdBy   User?    @relation("RoleCreator", fields: [createdById], references: [id])
+
+  role_menu role_menu[]
+}
+
+model Menu {
+  id          Int      @id @default(autoincrement())
+  order_num   Int
+  menu_name   String
+  path        String
+  parent_id   Int?
+  icon        String?
+  create_time DateTime @default(now())
+
+  // 自引用关系：定义与父菜单的关系
+  parent Menu? @relation("ParentChild", fields: [parent_id], references: [id])
+
+  // 子菜单关系：与所有子菜单的关联
+  children Menu[] @relation("ParentChild")
+
+  role_menu role_menu[]
+}
+
+model role_menu {
+  id      Int @id @default(autoincrement())
+  role_id Int
+  menu_id Int
+
+  //关系定义
+  role Role @relation(fields: [role_id], references: [id], onDelete: Cascade)
+  menu Menu @relation(fields: [menu_id], references: [id], onDelete: Cascade)
+
+  @@unique([role_id, menu_id]) // 一个角色与菜单的绑定唯一
 }

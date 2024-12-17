@@ -19,6 +19,8 @@ import { CaptchaService } from './src/captcha/services';
 import session from 'express-session';
 import Redis from 'ioredis';
 import {RedisStore} from 'connect-redis';
+import { MenuService } from './src/menu/services';
+import { Menu } from './src/menu/controller';
 
  // 创建 Redis 客户端
 const redisClient = new Redis()
@@ -49,6 +51,13 @@ container.bind(UserService).to(UserService)
 */
 container.bind(Role).to(Role)
 container.bind(RoleService).to(RoleService)
+
+/**
+ * menu模块
+ */
+container.bind(Menu).to(Menu)
+container.bind(MenuService).to(MenuService)
+
 
 /**
  * 字典模块

@@ -23,3 +23,50 @@ export const handleError = (arr)=>{
     })
     return dto
 }
+
+
+export const convertToTree = (list = []) =>{
+    const res = []
+
+    let itemMap = {}
+
+    list.forEach(item =>{
+        let id = item.id;
+        let pId = item.parent_id;
+
+        if (!itemMap[id]) {
+            itemMap[id] = {
+                ...item,
+                children:[]
+            }
+        }
+
+        if (!pId) {
+            // 没有父级是顶层
+            res.push(itemMap[id])
+        } else {
+            // if(!itemMap[pId]) {
+            //     itemMap[pId] = {
+            //         children: []
+            //     }
+            // }
+            itemMap[pId].children.push(itemMap[id])
+        }
+    })
+
+    // list.forEach(item => {
+    //     itemMap[item.id] = {...item, children:[]}
+    // })
+
+    // list.forEach(item => {
+    //     const treeItem = itemMap[item.id];
+    //     const pItem = itemMap[item.parent_id];
+
+    //     if (pItem) {
+    //         pItem.children.push(treeItem)
+    //     } else {
+    //         res.push(treeItem)
+    //     }
+    // })
+    return res
+}
