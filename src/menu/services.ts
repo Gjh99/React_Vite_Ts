@@ -29,7 +29,7 @@ export class MenuService {
                 }
             });
 
-            res.status(200).json({ code: 200, menus });
+            res.status(200).json({ code: 200, data: menus });
         } catch (err) {
             res.status(500).json({ error: "获取菜单列表失败", details: err.message });
         }
