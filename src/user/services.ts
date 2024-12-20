@@ -47,6 +47,10 @@ export class UserService {
             return sendResponse(res, 500, '账号不存在')
         }
 
+        if (!user.status) {
+            return sendResponse(res, 500, '账号未启用')
+        }
+
         // 密码验证
         const password = await bcrypt.compare(data.password, user.password)
         if (!password) {
