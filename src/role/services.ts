@@ -23,11 +23,11 @@ export class RoleService {
         }
 
         let { menu_id, ...data } = body
-        
+
         if (!Array.isArray(menu_id) || menu_id.length === 0) {
             return sendResponse(res, 500, '菜单ID不能为空');
         }
-    
+
         try {
             await this.PrismaDB.prisma.$transaction(async (prisma) => {
                 await this.PrismaDB.prisma.role.create({
@@ -102,34 +102,45 @@ export class RoleService {
      */
     public async editRoleAuth(req, res) {
         const { body: data } = req;
-        const { id, menu_id, ...roleData } = data;
-        
-        if (!Array.isArray(menu_id) || menu_id.length === 0) {
-            return sendResponse(res, 500, '菜单ID不能为空');
+        const { id, menu_id, type, ...roleData } = data;
+
+        if (!type) {
+            if (!Array.isArray(menu_id) || menu_id.length === 0) {
+                return sendResponse(res, 500, '菜单ID不能为空');
+            }
+        } else {
+            let {status} = data
+            await this.PrismaDB.prisma.role.update({
+                where: { id },
+                data: {
+                    status
+                }
+            })
+            return sendResponse(res, 200, '修改角色状态成功')
         }
-    
+
         // 检查角色是否存在
         const role = await this.PrismaDB.prisma.role.findUnique({
             where: { id }
         });
-    
+
         if (!role) {
             return sendResponse(res, 500, '角色不存在');
         }
-    
+
         try {
             await this.PrismaDB.prisma.$transaction(async (prisma) => {
-                 await prisma.role.update({
+                await prisma.role.update({
                     where: { id },
                     data: {
                         ...roleData
                     }
                 });
-                
+
                 await prisma.role_menu.deleteMany({
                     where: { role_id: id }
                 });
-                
+
                 const newBindings = menu_id.map((menuId: number) => ({
                     role_id: id,
                     menu_id: menuId,
@@ -139,7 +150,7 @@ export class RoleService {
                     data: newBindings,
                 });
             });
-    
+
             return sendResponse(res, 200, '更新角色权限成功');
         } catch (error) {
             return sendResponse(res, 500, '更新角色权限失败', error.message);
