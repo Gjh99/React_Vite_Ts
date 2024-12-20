@@ -23,7 +23,7 @@ import {
     Switch,
     Modal,
     UploadProps,
-    message,
+    App,
     Upload, Space
 } from 'antd';
 import type {GetProp, TableColumnsType, TableProps} from 'antd';
@@ -76,6 +76,7 @@ interface TableParams {
 }
 
 const user: React.FC = () => {
+    const {message} = App.useApp()
     const {styles} = useStyle();
     const [role, setRole] = useState([])
     const [dictData, setDictData] = useState([])

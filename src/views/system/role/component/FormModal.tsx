@@ -1,4 +1,4 @@
-import {Checkbox, Col, Form, Input, message, Modal, Row, Switch, Tree} from "antd";
+import {App, Checkbox, Col, Form, Input, Modal, Row, Switch, Tree} from "antd";
 import {useImperativeHandle, useState, forwardRef, useEffect} from "react";
 import type {CheckboxProps} from 'antd';
 import '../index.less'
@@ -28,6 +28,7 @@ const FormModal = forwardRef<FormModalRef, FormModalInterface>(({
                                                                     roleList,
                                                                     editDataFn
                                                                 }, ref) => {
+    const {message} = App.useApp();
     const [modalForm] = Form.useForm();
     const [treeData, setTreeData] = useState([])
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -189,7 +190,8 @@ const FormModal = forwardRef<FormModalRef, FormModalInterface>(({
     }, [])
 
     useEffect(() => {
-        if (!isAddModalOpen) {
+        if (!isAddModalOpen && ModalTitle) {
+            console.log('isAddModalOpen', isAddModalOpen)
             setExpandedKeys([]);
             setCheckedKeys([]);
             modalForm.resetFields();

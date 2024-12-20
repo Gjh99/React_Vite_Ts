@@ -5,10 +5,11 @@ import {
     Flex,
     Form,
     GetProp,
-    Input, message,
+    Input,
     Select, Space,
     Switch,
     Table,
+    App,
     TableColumnsType,
     TableProps
 } from "antd";
@@ -62,11 +63,12 @@ interface TableParams {
 }
 
 const role = () => {
+    const { message  } = App.useApp();
     const {styles} = useStyle();
     const [form] = Form.useForm();
     const [userTableData, setUserTableData] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [modalTitle, setModalTitle] = useState('新增');
+    const [modalTitle, setModalTitle] = useState('');
     const formModalRef = useRef<any>(null);
     const [tableParams, setTableParams] = useState<TableParams>({
         pagination: {
@@ -163,6 +165,10 @@ const role = () => {
     };
 
     const roleEditFn = async (data: DataType, type?:string) => {
+        if (type) {
+            // @ts-ignore
+            data.type = type
+        }
         let res = await roleEdit(data);
         let {code, msg} = res
         if (code == 200) {

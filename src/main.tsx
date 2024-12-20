@@ -1,5 +1,5 @@
 import {createRoot} from 'react-dom/client'
-import App from './App'
+import MyApp from './App'
 import '@/styles/reset.less'
 import '@/styles/common.less'
 import '@/styles/theme.less'
@@ -13,7 +13,7 @@ createRoot(document.getElementById('root')!).render(
     // <StrictMode>
     <Provider store={store}>
         <PersistGate persistor={persistor}>
-            <App/>
+            <MyApp/>
         </PersistGate>
     </Provider>
     // </StrictMode>

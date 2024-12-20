@@ -1,4 +1,4 @@
-import {Col, Form, Input, InputNumber, message, Modal, Row, Select, Switch} from "antd";
+import {App, Col, Form, Input, InputNumber, Modal, Row, Select, Switch} from "antd";
 import {useImperativeHandle, useState, forwardRef, useEffect} from "react";
 import {userAdd} from "@/api/user";
 
@@ -34,6 +34,7 @@ const FormModal = forwardRef<FormModalRef, FormModalInterface>(({
                                                                     userInfoList,
                                                                     editDataFn
                                                                 }, ref) => {
+    const {message} = App.useApp()
     const [modalForm] = Form.useForm();
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [formItem, setFormItem] = useState()
