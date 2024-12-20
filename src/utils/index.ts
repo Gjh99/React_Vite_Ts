@@ -60,3 +60,17 @@ export const transformDictData = (dictData: DictDataInterFace[], id: number) => 
     const item: DictDataInterFace | undefined = dictData.find(item => item.id == id)
     return item?.label
 }
+
+/**
+ * @description 数组扁平化
+ * @param {treeData}  array
+ * @return array
+ */
+export const flattenTree = (treeData: any[]): any[] => {
+    return treeData.flatMap(item => {
+        const { children, ...rest } = item;
+        return children && children.length > 0
+            ? [rest, ...flattenTree(children)]
+            : [rest];
+    });
+};
