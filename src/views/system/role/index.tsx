@@ -103,8 +103,8 @@ const role = () => {
                     {
                         record.id !== 1 ?
                             <Space size="middle">
-                                <a onClick={() => editFn(record)}>修改</a>
-                                <a onClick={() => roleDeleteFn([record.id])} style={{color: "#ff4d4f"}}>删除</a>
+                                <Button type="link" onClick={() => editFn(record)}>修改</Button>
+                                <Button type="link" danger onClick={() => roleDeleteFn([record.id])}>删除</Button>
                             </Space> : <Space></Space>
                     }
                 </div>

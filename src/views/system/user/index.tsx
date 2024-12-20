@@ -139,8 +139,8 @@ const user: React.FC = () => {
                     {
                         record.user_name !== 'admin' ?
                             <Space size="middle">
-                                <a onClick={() => editFn(record)}>修改</a>
-                                <a onClick={() => userDeleteFn([record.id])} style={{color: "#ff4d4f"}}>删除</a>
+                                <Button type="link" onClick={() => editFn(record)}>修改</Button>
+                                <Button type="link" danger onClick={() => userDeleteFn([record.id])}>删除</Button>
                             </Space> : <Space></Space>
                     }
                 </div>
