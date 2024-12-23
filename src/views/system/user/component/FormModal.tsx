@@ -47,16 +47,25 @@ const FormModal = forwardRef<FormModalRef, FormModalInterface>(({
     const modalIsOpen = (val:any) => {
         if (val) {
             setFormItem(val)
+            console.log('val',formItem)
         }
-        console.log('val',val)
         setIsAddModalOpen(!isAddModalOpen)
     }
     useEffect(() => {
-        console.log('formItem',formItem)
+        console.log('formItem===========',formItem)
         if (formItem) {
             modalForm.setFieldsValue(formItem)
         }
     }, [formItem])
+
+    useEffect(() => {
+        console.log(isAddModalOpen)
+        console.log(ModalTitle)
+        if (!isAddModalOpen && ModalTitle) {
+            // modalForm.resetFields();
+            setFormItem(undefined)
+        }
+    }, [isAddModalOpen])
 
     const addHandleOk = async () => {
         const validate = await modalForm.validateFields();

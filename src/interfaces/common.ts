@@ -23,5 +23,5 @@ export interface PropsInterFace {
 export interface DictDataInterFace {
     id: number;
     label: string;
-    value: string
+    value: number
 }

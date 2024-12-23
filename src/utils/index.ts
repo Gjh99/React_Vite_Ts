@@ -57,7 +57,7 @@ export const arrayBufferToBase64 = (buffer: ArrayBuffer) => {
  * @return label
  */
 export const transformDictData = (dictData: DictDataInterFace[], id: number) => {
-    const item: DictDataInterFace | undefined = dictData.find(item => item.id == id)
+    const item: DictDataInterFace | undefined = dictData.find(item => item.value == id)
     return item?.label
 }
 

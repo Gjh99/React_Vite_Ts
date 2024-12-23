@@ -90,26 +90,30 @@ const user: React.FC = () => {
         },
     });
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalTitle, setModalTitle] = useState('新增');
+    const [modalTitle, setModalTitle] = useState('');
     const formModalRef = useRef<any>(null);
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
     const columns: TableColumnsType<DataType> = [
         {
             title: '登录账号',
+            align: 'center',
             dataIndex: 'user_name',
         },
         {
             title: '用户名称',
             dataIndex: 'nick_name',
+            align: 'center',
             defaultSortOrder: 'descend',
         },
         {
             title: '年龄',
+            align: 'center',
             dataIndex: 'user_age',
         },
         {
             title: '性别',
+            align: 'center',
             dataIndex: 'user_sex',
             render: (_, record: DataType) => (
                 transformDictData(dictData, record.user_sex)
@@ -117,10 +121,12 @@ const user: React.FC = () => {
         },
         {
             title: '手机号',
+            align: 'center',
             dataIndex: 'phone_number',
         },
         {
             title: '是否启用',
+            align: 'center',
             dataIndex: 'status',
             render: (_, record) => (
                 record.user_name !== 'admin' ?
@@ -129,11 +135,13 @@ const user: React.FC = () => {
         },
         {
             title: '创建时间',
+            align: 'center',
             dataIndex: 'create_time',
         },
         {
             title: '操作',
             key: 'action',
+            align: 'center',
             render: (_, record) => (
                 <div>
                     {
@@ -212,7 +220,7 @@ const user: React.FC = () => {
         userEditFn(record, 'switch')
     };
 
-    const userEditFn = async (data: DataType, type?:string) => {
+    const userEditFn = async (data: DataType, type?: string) => {
         let res = await userEdit(data);
         let {code, msg} = res
         if (code == 200) {
@@ -288,6 +296,13 @@ const user: React.FC = () => {
         let res = await getRoleList();
         let {code, data} = res;
         if (code == 200) {
+            data.map((item: any) => {
+                if (!item.status) {
+                    item.disabled = true
+                } else {
+                    item.disabled = false
+                }
+            })
             setRole(data)
         }
     }

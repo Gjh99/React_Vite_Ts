@@ -81,10 +81,12 @@ const role = () => {
     const columns: TableColumnsType<DataType> = [
         {
             title: '权限名称',
+            align: 'center',
             dataIndex: 'role_name',
         },
         {
             title: '是否启用',
+            align: 'center',
             dataIndex: 'status',
             render: (_, record) => (
                 record.id !== 1 ?
@@ -93,10 +95,12 @@ const role = () => {
         },
         {
             title: '创建时间',
+            align: 'center',
             dataIndex: 'create_time',
         },
         {
             title: '操作',
+            align: 'center',
             key: 'action',
             render: (_, record) => (
                 <div>

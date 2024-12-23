@@ -194,7 +194,8 @@ const FormModal = forwardRef<FormModalRef, FormModalInterface>(({
             console.log('isAddModalOpen', isAddModalOpen)
             setExpandedKeys([]);
             setCheckedKeys([]);
-            modalForm.resetFields();
+            // modalForm.resetFields();
+            setFormItem(undefined)
         }
     }, [isAddModalOpen])
 
