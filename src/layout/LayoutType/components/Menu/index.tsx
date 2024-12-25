@@ -46,6 +46,7 @@ const MyMenu = (props: MyMenuInterface) => {
                     path: "/home",
                     icon: "icon-shouye"
                 }, ...res.data])
+            console.log('key', menuList)
             setMenu([...menuItems])
         }
     }
@@ -84,7 +85,7 @@ const MyMenu = (props: MyMenuInterface) => {
                     children: item.children ? item.children.map(child => ({
                         ...child,
                         icon: child.icon ? <i className={`iconfont ${child.icon} fontSize16`} /> : null
-                    })) : []
+                    })) : null
                 }))}
             />
         </>

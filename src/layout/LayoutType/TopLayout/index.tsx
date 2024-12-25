@@ -1,56 +1,46 @@
-import React from 'react';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import {Layout} from 'antd';
 import Logo from "../components/Logo";
 import Setting from "../components/Setting";
 import AvatarIcon from "../components/MyAvatar";
+import MyMenu from "@/layout/LayoutType/components/Menu";
+import Breadcrumb from "@/layout/LayoutType/components/Breadcrumb";
+import {Outlet} from "react-router-dom";
+import './index.less'
+import Language from "@/layout/LayoutType/components/Language";
 
-const { Header, Content, Footer } = Layout;
+const {Header, Content, Footer} = Layout;
 
-const items = new Array(3).fill(null).map((_, index) => ({
-    key: index + 1,
-    label: `nav ${index + 1}`,
-}));
+interface IndexInterface {
+    showTabs: boolean;
+    showBreadcrumb: boolean;
+}
 
-const Index: React.FC = () => {
-    const {
-        token: { colorBgContainer, borderRadiusLG },
-    } = theme.useToken();
+const Index = (props: IndexInterface) => {
+    let {showBreadcrumb} = props
 
     return (
-        <Layout>
+        <Layout className="topLayout">
             <Header className="flx-justify-between">
                 <Logo/>
-                <Menu
-                    theme="dark"
-                    mode="horizontal"
-                    defaultSelectedKeys={['2']}
-                    items={items}
-                    style={{ flex: 1, minWidth: 0 }}
-                />
-                <div className="mr10 flx-center">
+                <div className="menu">
+                    <MyMenu mode={'horizontal'}/>
+                </div>
+                <div className="mr10 flx-center h100">
+                    <Language/>
                     <Setting/>
                     <AvatarIcon/>
                 </div>
             </Header>
-            <Content style={{ padding: '0 48px' }}>
-                <Breadcrumb style={{ margin: '16px 0' }}>
-                    <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>List</Breadcrumb.Item>
-                    <Breadcrumb.Item>App</Breadcrumb.Item>
-                </Breadcrumb>
-                <div
-                    style={{
-                        background: colorBgContainer,
-                        minHeight: 280,
-                        padding: 24,
-                        borderRadius: borderRadiusLG,
-                    }}
-                >
-                    Content
-                </div>
+            <div className="breadcrumb mt10 mb10">
+                {
+                    showBreadcrumb && <Breadcrumb/>
+                }
+            </div>
+            <Content style={{padding: '0 48px', overflowY: 'auto'}}>
+                <Outlet/>
             </Content>
-            <Footer style={{ textAlign: 'center' }}>
-                Ant Design ©{new Date().getFullYear()} Created by Ant UED
+            <Footer style={{textAlign: 'center'}}>
+                React & NodeServer ©{new Date().getFullYear()} Created by $
             </Footer>
         </Layout>
     );

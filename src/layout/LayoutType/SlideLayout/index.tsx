@@ -12,6 +12,7 @@ import {Outlet} from "react-router-dom";
 import './index.less'
 import MyTabs from "@/layout/LayoutType/components/Tabs";
 import Breadcrumb from "@/layout/LayoutType/components/Breadcrumb";
+import Language from "@/layout/LayoutType/components/Language";
 
 const {Header, Sider, Content} = Layout;
 
@@ -50,6 +51,7 @@ const Index = (props: IndexInterface) => {
                         }
                     </div>
                     <div className="mr10 flx-center h100">
+                        <Language/>
                         <Setting/>
                         <AvatarIcon/>
                     </div>
