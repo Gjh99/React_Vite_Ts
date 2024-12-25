@@ -6,6 +6,55 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "382957",
+      "name": "群蜂系统设置",
+      "font_class": "xitongshezhi",
+      "unicode": "e661",
+      "unicode_decimal": 58977
+    },
+    {
+      "icon_id": "421132",
+      "name": "系统操作日志",
+      "font_class": "xitongcaozuorizhi",
+      "unicode": "e691",
+      "unicode_decimal": 59025
+    },
+    {
+      "icon_id": "577364",
+      "name": "首页",
+      "font_class": "shouye",
+      "unicode": "e751",
+      "unicode_decimal": 59217
+    },
+    {
+      "icon_id": "4735148",
+      "name": "用户管理",
+      "font_class": "yonghuguanli",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "10213489",
+      "name": "角色管理",
+      "font_class": "jiaoseguanli",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "22965493",
+      "name": "工具箱",
+      "font_class": "tubiao_gongjuxiang",
+      "unicode": "e61f",
+      "unicode_decimal": 58911
+    },
+    {
+      "icon_id": "29619244",
+      "name": "base64图片转换",
+      "font_class": "base64tupianzhuanhuan",
+      "unicode": "e945",
+      "unicode_decimal": 59717
+    },
+    {
       "icon_id": "8845833",
       "name": "在线人数",
       "font_class": "zaixianrenshu",

@@ -40,13 +40,13 @@ const MyMenu = (props: MyMenuInterface) => {
         let res = await getMenu();
         let {code} = res;
         if (code == 200) {
-            const menuItems = generateMenuItem(res.data)
-            setMenu([
+            const menuItems = generateMenuItem([
                 {
-                    label: "首页",
-                    key: "/home",
-                    icon: ""
-                },...menuItems])
+                    menu_name: "首页",
+                    path: "/home",
+                    icon: "icon-shouye"
+                }, ...res.data])
+            setMenu([...menuItems])
         }
     }
 
@@ -78,7 +78,14 @@ const MyMenu = (props: MyMenuInterface) => {
                 mode={mode as 'horizontal' | 'vertical' | 'inline'}
                 selectedKeys={[location.pathname]}
                 onClick={clickMenu}
-                items={menuList}
+                items={menuList.map((item: MenuInterface) => ({
+                    ...item,
+                    icon: item.icon ? <i className={`iconfont ${item.icon} fontSize16`} /> : null,
+                    children: item.children ? item.children.map(child => ({
+                        ...child,
+                        icon: child.icon ? <i className={`iconfont ${child.icon} fontSize16`} /> : null
+                    })) : []
+                }))}
             />
         </>
     )
