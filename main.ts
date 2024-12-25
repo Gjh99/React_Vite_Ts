@@ -18,14 +18,19 @@ import { Captcha } from './src/captcha/controller';
 import { CaptchaService } from './src/captcha/services';
 import session from 'express-session';
 import Redis from 'ioredis';
-import {RedisStore} from 'connect-redis';
+import { RedisStore } from 'connect-redis';
 import { MenuService } from './src/menu/services';
 import { Menu } from './src/menu/controller';
+import { Monitor } from './src/monitor/controller';
+import { MonitorService } from './src/monitor/services';
 
- // 创建 Redis 客户端
+// 创建 Redis 客户端
 const redisClient = new Redis()
 
 const container = new Container();
+
+const prisma = new PrismaClient();
+
 /**
  * jwt模块
  * 
@@ -72,6 +77,13 @@ container.bind(DictService).to(DictService)
 container.bind(ToolBox).to(ToolBox)
 container.bind(ToolBoxService).to(ToolBoxService)
 
+/* 
+ 系统监控模块
+*/
+
+container.bind(Monitor).to(Monitor)
+container.bind(MonitorService).to(MonitorService)
+
 /**
  * prisma依赖注入
  */
@@ -92,15 +104,53 @@ server.setConfig((app) => {
     //解析json数据
     app.use(express.json())
 
+    // 中间件记录请求和响应日志
+    app.use(async (req, res, next) => {
+        const start = Date.now();  // 请求开始时间
+
+        // 临时存储响应数据
+        let responseData = '';
+
+        // 保存原始响应的 `send` 方法
+        const originalSend = res.send;
+        res.send = function (data: any) {
+            responseData = data;  // 捕获响应内容
+            res.send = originalSend;  // 恢复 `send` 方法
+            return res.send(data);  // 继续执行原始的 send
+        };
+
+        // 继续执行后续中间件和路由
+        await next();
+
+        // 计算请求耗时
+        const duration = Date.now() - start;
+        
+        if (req.originalUrl !=='/user/login') {
+
+            // 插入日志记录到数据库
+            await prisma.log.create({
+                data: {
+                    method: req.method,
+                    endpoint: req.originalUrl,
+                    requestBody: JSON.stringify(req.body),  // 请求体
+                    response: responseData,  // 响应内容
+                }
+            });
+            
+        }
+
+        console.log(`Logged request to ${req.originalUrl}, method: ${req.method}, duration: ${duration}ms`);
+    });
+
     // 初始化session 
     app.use(
         session({
-        secret: 'node_service_123456', // 设置用于签名会话ID的密钥 
-        resave: false, // 是否强制保存会话即使未修改 
-        saveUninitialized: true, // 是否将未初始化的会话存储 
-        cookie: { maxAge: 60000 }, // 会话有效期 
-        store: new RedisStore({ client: redisClient }), 
-    }));
+            secret: 'node_service_123456', // 设置用于签名会话ID的密钥 
+            resave: false, // 是否强制保存会话即使未修改 
+            saveUninitialized: true, // 是否将未初始化的会话存储 
+            cookie: { maxAge: 60000 }, // 会话有效期 
+            store: new RedisStore({ client: redisClient }),
+        }));
 
     // 初始化passport
     app.use(passport.initialize());

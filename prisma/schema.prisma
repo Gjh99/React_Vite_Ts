@@ -111,3 +111,12 @@ model role_menu {
 
   @@unique([role_id, menu_id]) // 一个角色与菜单的绑定唯一
 }
+
+model Log {
+  id          Int      @id @default(autoincrement())  // 日志记录ID
+  timestamp   DateTime @default(now())                // 时间戳
+  method      String   // 请求方法（GET, POST, PUT, DELETE等）
+  endpoint    String   // 接口地址
+  requestBody String?  // 请求的参数（如果是POST/PUT请求）
+  response    Text     // 响应内容
+}
