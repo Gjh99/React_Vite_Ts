@@ -1,80 +1,64 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
-    UploadOutlined,
-    UserOutlined,
-    VideoCameraOutlined,
 } from '@ant-design/icons';
-import {Button, Layout, Menu, theme} from 'antd';
-import Logo from "../components/Logo.tsx";
-import Setting from "../components/Setting.tsx";
-import AvatarIcon from "../components/MyAvatar.tsx";
+import {Button, Layout} from 'antd';
+import Logo from "../components/Logo";
+import Setting from "../components/Setting";
+import AvatarIcon from "../components/MyAvatar";
+import MyMenu from "../components/Menu";
+import {Outlet} from "react-router-dom";
+import './index.less'
+import MyTabs from "@/layout/LayoutType/components/Tabs";
+import Breadcrumb from "@/layout/LayoutType/components/Breadcrumb";
 
 const {Header, Sider, Content} = Layout;
 
-const Index: React.FC = () => {
+interface IndexInterface {
+    showTabs: boolean;
+    showBreadcrumb: boolean;
+}
+
+const Index = (props: IndexInterface) => {
+    let {showTabs, showBreadcrumb} = props
     const [collapsed, setCollapsed] = useState(false);
-    const {
-        token: {colorBgContainer, borderRadiusLG},
-    } = theme.useToken();
 
     return (
-        <Layout>
+        <Layout className="slideLayout">
             <Sider trigger={null} collapsible collapsed={collapsed}>
-                <div style={{height: '64px'}}>
-                    <Logo/>
+                <div className="logo" style={{height: '64px'}}>
+                    <Logo collapsed={collapsed}/>
                 </div>
-                <Menu
-                    theme="dark"
-                    mode="inline"
-                    defaultSelectedKeys={['1']}
-                    items={[
-                        {
-                            key: '1',
-                            icon: <UserOutlined/>,
-                            label: 'nav 1',
-                        },
-                        {
-                            key: '2',
-                            icon: <VideoCameraOutlined/>,
-                            label: 'nav 2',
-                        },
-                        {
-                            key: '3',
-                            icon: <UploadOutlined/>,
-                            label: 'nav 3',
-                        },
-                    ]}
-                />
+                <MyMenu mode={'inline'}/>
             </Sider>
             <Layout>
                 <Header className="flx-justify-between">
-                    <Button
-                        type="text"
-                        icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
-                        onClick={() => setCollapsed(!collapsed)}
-                        style={{
-                            fontSize: '16px',
-                            width: 64,
-                            height: 64,
-                        }}
-                    />
-                    <div className="mr10 flx-center">
+                    <div className="flx-center h100">
+                        <Button
+                            type="text"
+                            icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
+                            onClick={() => setCollapsed(!collapsed)}
+                            style={{
+                                fontSize: '16px',
+                                width: 64,
+                                height: 64,
+                            }}
+                        />
+                        {
+                            showBreadcrumb && <Breadcrumb/>
+                        }
+                    </div>
+                    <div className="mr10 flx-center h100">
                         <Setting/>
                         <AvatarIcon/>
                     </div>
                 </Header>
-                <Content
-                    style={{
-                        margin: '24px 16px',
-                        padding: 24,
-                        minHeight: 280,
-                        background: colorBgContainer,
-                        borderRadius: borderRadiusLG,
-                    }}
-                >
-                    Content
+                {
+                    showTabs && <MyTabs/>
+                }
+                <Content style={{overflowY: 'auto'}}>
+                    <Outlet/>
                 </Content>
             </Layout>
         </Layout>
