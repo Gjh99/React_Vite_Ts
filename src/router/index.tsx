@@ -4,6 +4,7 @@ import Login from '@/views/login'
 import Home from '@/views/home'
 import User from '@/views/system/user'
 import Role from '@/views/system/role'
+import Log from '@/views/system/logs'
 import PictureConversion from '@/views/toolBox/PictureConversion'
 
 export const rootRouter = [
@@ -60,6 +61,15 @@ export const rootRouter = [
                     requiresAuth: true
                 }
             },
+            {
+                path: '/system/log',
+                element: <Log/>,
+                meta:{
+                    title: '操作日志',
+                    key: 'log',
+                    requiresAuth: true
+                }
+            },
         ]
     },
     {
@@ -74,15 +84,6 @@ export const rootRouter = [
                 meta:{
                     title: '图片转换',
                     key: 'PictureConversion',
-                    requiresAuth: true
-                }
-            },
-            {
-                path: '/system/role',
-                element: <Role/>,
-                meta:{
-                    title: '角色管理',
-                    key: 'role',
                     requiresAuth: true
                 }
             },
