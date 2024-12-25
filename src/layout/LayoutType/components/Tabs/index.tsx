@@ -48,12 +48,12 @@ const MyTabs = (props: MyTabsInterface) => {
 
     }, [pathname]);
 
-    useEffect(()=>{
-        return () =>{
-            console.log('页面销毁')
-            setTabsRoute([])
-        }
-    }, [])
+    // useEffect(()=>{
+    //     return () =>{
+    //         console.log('页面销毁')
+    //         setTabsRoute([])
+    //     }
+    // }, [])
 
     const processedTabsList = tabsRouteArray.map(({title, pathName, key}) => ({
         label: title,
