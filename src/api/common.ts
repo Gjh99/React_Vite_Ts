@@ -5,7 +5,7 @@ export const getCaptcha = async (params?: any) =>{
    return res
 }
 
-// export const roleAdd = async (data?: any) =>{
-//    const res = await  post('/role/add', data)
-//    return res
-// }
+export const getLogList = async (params?: any) =>{
+   const res = await  get('/monitor/LogList', params)
+   return res
+}
