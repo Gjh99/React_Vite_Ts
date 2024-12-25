@@ -5,10 +5,11 @@ import './index.less'
 import {logout} from "@/api/user";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {persistor} from "@/redux";
 import {removeToken} from "@/utils/cookie";
 import {RootState} from "@/redux/interface";
 import {useSelector} from "react-redux";
+import {store} from "@/redux";
+import {setTabsRoute} from "@/redux/modules/tabs/action";
 
 function AvatarIcon() {
     const userInfo = useSelector((state: RootState) => state.auth?.userInfo);
@@ -35,9 +36,10 @@ function AvatarIcon() {
         let res = await logout()
         let {code, msg} = res
         if (code == 200) {
-            await persistor.purge()
-            localStorage.clear()
+            // @ts-ignore
+            store.dispatch(setTabsRoute([{ title: '首页', pathName: '/home', key: '1' }]));
             removeToken()
+            localStorage.clear()
             navigate('/login')
         } else {
             message.error(msg)
