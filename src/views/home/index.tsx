@@ -4,8 +4,11 @@ import reactImg from '@/assets/react.svg';
 import EChart from "../../component/Echart";
 import './index.less';
 import {getSystemInterView} from "@/api/user";
+import {useSelector} from "react-redux";
+import {RootState} from "@/redux/interface";
 
 const home: React.FC = ()=>{
+    const userInfo = useSelector((state: RootState) => state.auth?.userInfo);
     const homeRef = useRef(null);
 
     const [systemData, setSystemData] = useState([
@@ -97,7 +100,7 @@ const home: React.FC = ()=>{
                 <div className="flx-align-center">
                     <Avatar size={64} src={reactImg}/>
                     <div className="ml10 fontW fontSize20">
-                        <div>你好，</div>
+                        <div>你好，{userInfo?.nick_name}</div>
                         <div>这里是首页</div>
                     </div>
                 </div>
